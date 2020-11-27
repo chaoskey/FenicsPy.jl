@@ -19,7 +19,8 @@ export Rectangle, Circle, generate_mesh
 ############################################
 
 push!(fenicsclass, [:TimeSeries])
-export TimeSeries
+array(matrix) = matrix.gather_on_zero()
+export TimeSeries, array
 
 ############################################
 #    dolfin.cpp.io module
@@ -53,8 +54,8 @@ export assemble
 ############################################
 
 push!(fenicsclass, [:DirichletBC, :AutoSubDomain])
-push!(fenicsfunc, [:interpolate, :errornorm, :solve])
-export DirichletBC, AutoSubDomain, interpolate, errornorm, solve
+push!(fenicsfunc, [:interpolate, :errornorm, :project, :solve])
+export DirichletBC, AutoSubDomain, interpolate, errornorm, project, solve
 
 ############################################
 #    dolfin.functions module
