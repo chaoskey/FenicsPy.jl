@@ -36,8 +36,8 @@ export XDMFFile, File
 #
 ############################################
 
-push!(fenicsclass, [:Point, :UnitSquareMesh])
-export Point, UnitSquareMesh
+push!(fenicsclass, [:Point, :RectangleMesh, :UnitSquareMesh])
+export Point, RectangleMesh, UnitSquareMesh
 
 ############################################
 #    dolfin.cpp.fem module
