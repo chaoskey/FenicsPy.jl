@@ -53,8 +53,8 @@ export assemble
 ############################################
 
 push!(fenicsclass, [:DirichletBC, :AutoSubDomain])
-push!(fenicsfunc, [:errornorm, :solve])
-export DirichletBC, AutoSubDomain, errornorm, solve
+push!(fenicsfunc, [:interpolate, :errornorm, :solve])
+export DirichletBC, AutoSubDomain, interpolate, errornorm, solve
 
 ############################################
 #    dolfin.functions module
