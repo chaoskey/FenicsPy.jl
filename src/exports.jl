@@ -39,15 +39,19 @@ export XDMFFile, File
 #
 ############################################
 
-push!(fenicsclass, [:BoxMesh, :Point, :RectangleMesh, :UnitSquareMesh])
-export BoxMesh, Point, RectangleMesh, UnitSquareMesh
+push!(fenicsclass, [:Mesh, :BoxMesh, :Point, :RectangleMesh, :UnitSquareMesh])
+export Mesh, BoxMesh, Point, RectangleMesh, UnitSquareMesh
 
 ############################################
 #    dolfin.cpp.fem module
+#
+# https://fenicsproject.org/docs/dolfin/1.6.0/python/programmers-reference/cpp/fem/index.html
+#
 ############################################
 
+push!(fenicsclass, :FiniteElement, :MixedElement)
 push!(fenicsfunc, :assemble)
-export assemble
+export FiniteElement, MixedElement, assemble
 
 #############################################
 #    dolfin.fem.module
@@ -67,8 +71,8 @@ export DirichletBC, AutoSubDomain, interpolate, errornorm, project, solve
 import Base: Function  # must be explicitly imported to be extended
 
 push!(fenicsclass, [:Constant, :Expression])
-push!(fenicsfunc, [:VectorFunctionSpace, :FunctionSpace, :TrialFunction, :TestFunction, :Function, :FacetNormal])
-export Constant, Expression, VectorFunctionSpace, FunctionSpace, TrialFunction, TestFunction, Function, FacetNormal
+push!(fenicsfunc, [:VectorFunctionSpace, :FunctionSpace, :TrialFunction, :TestFunction, :Function, :FacetNormal, :split])
+export Constant, Expression, VectorFunctionSpace, FunctionSpace, TrialFunction, TestFunction, Function, FacetNormal, split
 
 ############################################
 #    ufi      https://fenicsproject.org/pub/documents/ufl/ufl-user-manual/ufl-user-manual.pdf
