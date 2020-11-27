@@ -4,6 +4,9 @@ mshrclass = []
 fenicsfunc = []
 fenicsclass = []
 
+uflfunc = []
+uflclass = []
+
 export dx, ds, dS, dP
 
 ############################################
@@ -36,8 +39,8 @@ export XDMFFile, File
 #
 ############################################
 
-push!(fenicsclass, [:Point, :RectangleMesh, :UnitSquareMesh])
-export Point, RectangleMesh, UnitSquareMesh
+push!(fenicsclass, [:BoxMesh, :Point, :RectangleMesh, :UnitSquareMesh])
+export BoxMesh, Point, RectangleMesh, UnitSquareMesh
 
 ############################################
 #    dolfin.cpp.fem module
@@ -71,14 +74,17 @@ export Constant, Expression, VectorFunctionSpace, FunctionSpace, TrialFunction, 
 #    ufi      https://fenicsproject.org/pub/documents/ufl/ufl-user-manual/ufl-user-manual.pdf
 ############################################
 
-import Base: div  # must be explicitly imported to be extended
+import Base: div, sqrt  # must be explicitly imported to be extended
 
-push!(fenicsclass, [:Identity])
-push!(fenicsfunc, [:div, :grad, :nabla_grad, :dot, :inner, :sym, :lhs, :rhs])
-export Identity, div, grad, nabla_grad, dot, inner, sym, lhs, rhs
+push!(fenicsclass, :Identity)
+push!(fenicsfunc, [:div, :grad, :nabla_grad, :dot, :tr, :sqrt, :inner, :sym, :lhs, :rhs])
+push!(uflfunc, :nabla_div)
+export Identity, div, nabla_div, grad, nabla_grad, dot, tr, sqrt, inner, sym, lhs, rhs
 
 fenicsclass = vcat(fenicsclass...)
 fenicsfunc = vcat(fenicsfunc...)
 mshrclass = vcat(mshrclass...)
 mshrfunc = vcat(mshrfunc...)
+uflclass = vcat(uflclass...)
+uflfunc = vcat(uflfunc...)
 

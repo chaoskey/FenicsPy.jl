@@ -22,6 +22,7 @@ end
 include("exports.jl")
 
 const fenics = PyCall.PyNULL()
+const ufl = PyCall.PyNULL()
 const mshr = PyCall.PyNULL()
 
 function __init__()
@@ -53,6 +54,17 @@ function __init__()
         println(ex)
     end
 
+    try
+        copy!(ufl, pyimport_conda("ufl", "ufl", "conda-forge"))
+
+	[pyclass(ufl, vcat([cls]...)...) for cls in uflclass]
+	[pyfunc(ufl, vcat([fun]...)...) for fun in uflfunc]
+
+        println("Successfully pyimport ufl")
+    catch ex
+        println(ex)
+    end
+						    
 end
 
 end # FenicsPy
