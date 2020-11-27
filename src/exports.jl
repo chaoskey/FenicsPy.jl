@@ -30,10 +30,13 @@ export XDMFFile, File
 
 ############################################
 #    dolfin.cpp.mesh module
+#
+# https://fenicsproject.org/docs/dolfin/1.6.0/python/programmers-reference/cpp/mesh/index.html
+#
 ############################################
 
-push!(fenicsclass, :Point)
-export Point
+push!(fenicsclass, [:Point, :UnitSquareMesh])
+export Point, UnitSquareMesh
 
 ############################################
 #    dolfin.cpp.fem module
@@ -44,11 +47,14 @@ export assemble
 
 #############################################
 #    dolfin.fem.module
+#
+# https://fenicsproject.org/docs/dolfin/1.6.0/python/programmers-reference/fem/index.html
+#
 ############################################
 
 push!(fenicsclass, [:DirichletBC, :AutoSubDomain])
-push!(fenicsfunc, [:solve])
-export DirichletBC, AutoSubDomain, solve
+push!(fenicsfunc, [:errornorm, :solve])
+export DirichletBC, AutoSubDomain, errornorm, solve
 
 ############################################
 #    dolfin.functions module
