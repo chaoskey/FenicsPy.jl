@@ -41,7 +41,7 @@ a = lhs(F)
 L = rhs(F)
 
 # Time-stepping
-u = Function(V)
+u = FeFunction(V)
 
 t = 0
 for n = 1:num_steps

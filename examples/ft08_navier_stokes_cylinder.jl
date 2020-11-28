@@ -48,10 +48,10 @@ p = TrialFunction(Q)
 q = TestFunction(Q)
 
 # Define functions for solutions at previous and current time steps
-u_n = Function(V)
-u_ = Function(V)
-p_n = Function(Q)
-p_ = Function(Q)
+u_n = FeFunction(V)
+u_ = FeFunction(V)
+p_n = FeFunction(Q)
+p_ = FeFunction(Q)
 
 U  = 0.5*(u_n + u)
 n  = FacetNormal(mesh)
@@ -102,7 +102,9 @@ timeseries_p = TimeSeries("navier_stokes_cylinder/pressure_series")
 # Save mesh to file (for use in reaction_system.py)
 File("navier_stokes_cylinder/cylinder.xml.gz") << mesh
 
-global t = 0
+t = 0
+try
+
 for n in 0:(num_steps-1)
 
     # Update current time
@@ -120,25 +122,27 @@ for n in 0:(num_steps-1)
     b3 = assemble(L3)
     solve(A3, u_.vector(), b3, "cg", "sor")
 
-    if n%25 == 0 || n == num_steps-1
-        xdmffile_u.write(u_, t)
-        xdmffile_p.write(p_, t)
+    xdmffile_u.write(u_, t)
+    xdmffile_p.write(p_, t)
 
-        # Save nodal values to file
-        timeseries_u.store(u_.vector(), t)
-        timeseries_p.store(p_.vector(), t)
-
-        println("第", n, "步")
+    # Save nodal values to file
+    timeseries_u.store(u_.vector(), t)
+    timeseries_p.store(p_.vector(), t)
 
 
-        # Plot solution
-        #plot(u_)
-        #plot(p_)
-    end
+    # Plot solution
+    #plot(u_)
+    #plot(p_)
 
     #update values
     u_n.assign(u_)
     p_n.assign(p_)
+    
+    println("第", n, "步:  max u = ", max(array(u_.vector())...))
+end
+
+catch ex
+    println(ex)
 end
 
 

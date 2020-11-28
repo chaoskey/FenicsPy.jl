@@ -31,7 +31,7 @@ u_D = Expression(u_code, degree=2)
 bc = DirichletBC(V, u_D, "on_boundary")
 
 # Define variational problem
-u = Function(V)  # Note: not TrialFunction!
+u = FeFunction(V)  # Note: not TrialFunction!
 v = TestFunction(V)
 f = Expression(f_code, degree=2)
 F = q(u)*dot(grad(u), grad(v))*dx - f*v*dx

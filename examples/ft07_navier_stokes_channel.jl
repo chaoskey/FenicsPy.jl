@@ -38,10 +38,10 @@ p = TrialFunction(Q)
 q = TestFunction(Q)
 
 # Define functions for solutions at previous and current time steps
-u_n = Function(V)
-u_  = Function(V)
-p_n = Function(Q)
-p_  = Function(Q)
+u_n = FeFunction(V)
+u_  = FeFunction(V)
+p_n = FeFunction(Q)
+p_  = FeFunction(Q)
 
 # Define expressions used in variational forms
 U   = 0.5*(u_n + u)

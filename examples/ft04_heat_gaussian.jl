@@ -38,7 +38,7 @@ a, L = lhs(F), rhs(F)
 vtkfile = File("heat_gaussian/solution.pvd")
 
 # Time-stepping
-u = Function(V)
+u = FeFunction(V)
 t = 0
 for n = 1:num_steps
 

@@ -43,7 +43,7 @@ a = inner(σ(u), ϵ(v))*dx
 L = dot(f, v)*dx + dot(T, v)*ds
 
 # Compute solution
-u = Function(V)
+u = FeFunction(V)
 solve(a == L, u, bc)
 
 # Plot solution

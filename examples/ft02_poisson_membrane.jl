@@ -30,7 +30,7 @@ a = dot(grad(w), grad(v))*dx
 L = p*v*dx
 
 # Compute solution
-w = Function(V)
+w = FeFunction(V)
 solve(a == L, w, bc)
 
 # Plot solution

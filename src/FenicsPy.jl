@@ -2,6 +2,9 @@ module FenicsPy
 
 using PyCall
 
+import Base: size, length, show, *, +, -, /, ^, sin, cos, tan, asin, acos, atan, exp, log, div, sqrt, split
+
+
 function pyfunc(obj, name::Symbol, alias::Symbol=:nothing)
     alias = alias == :nothing ? name : alias
     func = getproperty(obj, name)
@@ -24,6 +27,8 @@ include("exports.jl")
 const fenics = PyCall.PyNULL()
 const ufl = PyCall.PyNULL()
 const mshr = PyCall.PyNULL()
+
+export fenics, ufl, mshr
 
 function __init__()
 

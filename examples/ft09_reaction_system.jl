@@ -23,7 +23,7 @@ mesh = Mesh("navier_stokes_cylinder/cylinder.xml.gz")
 W = VectorFunctionSpace(mesh, "P", 2)
 
 # Define function space for system of concentrations
-P1 = FiniteElement("P", triangle, 1)
+P1 = FiniteElement("P", fenics.triangle, 1)
 element = MixedElement([P1, P1, P1])
 V = FunctionSpace(mesh, element)
 
@@ -31,9 +31,9 @@ V = FunctionSpace(mesh, element)
 v_1, v_2, v_3 = TestFunctions(V)
 
 # Define functions for velocity and concentrations
-w = Function(W)
-u = Function(V)
-u_n = Function(V)
+w = FeFunction(W)
+u = FeFunction(V)
+u_n = FeFunction(V)
 
 # Split system functions to access components
 u_1, u_2, u_3 = split(u)

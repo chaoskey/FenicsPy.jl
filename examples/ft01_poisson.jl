@@ -26,7 +26,7 @@ a = dot(grad(u), grad(v))*dx
 L = f*v*dx
 
 # Compute solution
-u = Function(V)
+u = FeFunction(V)
 solve(a == L, u, bc)
 
 # Plot solution and mesh
