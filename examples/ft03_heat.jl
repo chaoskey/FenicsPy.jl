@@ -9,6 +9,7 @@
 ###############################################
 
 using FenicsPy
+import PyPlot
 
 T = 2.0            # final time
 num_steps = 10     # number of time steps
@@ -54,7 +55,7 @@ for n = 1:num_steps
     solve(a == L, u, bc)
 
     # Plot solution
-    #plot(u)
+    plot(u)
 
     # Compute error at vertices
     u_e = interpolate(u_D, V)
@@ -66,6 +67,4 @@ for n = 1:num_steps
 
 end
 
-# Hold plot
-#interactive()
 

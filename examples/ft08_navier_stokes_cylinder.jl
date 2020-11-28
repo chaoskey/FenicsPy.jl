@@ -7,6 +7,7 @@
 ###############################################
 
 using FenicsPy
+import PyPlot
 
 # Parameters：ρ,μ,Δt
 T = 5            
@@ -131,8 +132,8 @@ for n in 0:(num_steps-1)
 
 
     # Plot solution
-    #plot(u_)
-    #plot(p_)
+    plot(u_)
+    plot(p_)
 
     #update values
     u_n.assign(u_)

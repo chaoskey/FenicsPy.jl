@@ -6,6 +6,7 @@
 
 using FenicsPy
 using SymPy
+import PyPlot
 
 # nonlinear coefficient
 q(u) = 1 + u^2
@@ -41,7 +42,7 @@ F = q(u)*dot(grad(u), grad(v))*dx - f*v*dx
 FenicsPy.solve(F == 0, u, bc)
 
 # Plot solution
-#plot(u)
+plot(u)
 
 # Compute maximum error at vertices. This computation illustrates
 # an alternative to using compute_vertex_values as in poisson.py
@@ -50,5 +51,3 @@ u_e = FenicsPy.interpolate(u_D, V)
 error_max = max(abs.(array(u_e.vector()) - array(u.vector()))...)
 print("error_max = ", error_max)
 
-# Hold plot
-#interactive()

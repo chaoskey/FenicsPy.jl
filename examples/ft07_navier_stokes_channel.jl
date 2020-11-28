@@ -7,6 +7,7 @@
 ###############################################
 
 using FenicsPy
+import PyPlot
 
 T = 10.0           # final time
 num_steps = 500    # number of time steps
@@ -102,7 +103,7 @@ for n = 1:num_steps
     solve(A3, u_.vector(), b3)
 
     # Plot solution
-    #plot(u_)
+    plot(u_)
 
     # Compute error
     u_e = Expression(("4*x[1]*(1.0 - x[1])", "0"), degree=2)
@@ -117,5 +118,3 @@ for n = 1:num_steps
 
 end
 
-# Hold plot
-#interactive()

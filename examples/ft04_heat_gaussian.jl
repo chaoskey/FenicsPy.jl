@@ -8,6 +8,7 @@
 ###############################################
 
 using FenicsPy
+import PyPlot
 
 T = 2.0            # final time
 num_steps = 50     # number of time steps
@@ -50,11 +51,9 @@ for n = 1:num_steps
 
     # Save to file and plot solution
     vtkfile << (u, t)
-    #plot(u)
+    plot(u)
 
     # Update previous solution
     u_n.assign(u)
 end
 
-# Hold plot
-#interactive()

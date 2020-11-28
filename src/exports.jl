@@ -79,13 +79,23 @@ export DirichletBC, AutoSubDomain, assemble, split, errornorm, project, solve
 push!(fenicsclass, :Point)
 export Point
 
+############################################
+#
+#    dolfin.common
+#
+# https://fenicsproject.org/docs/dolfin/2017.2.0/python/programmers-reference/common/index.html
+#
+############################################
+
+push!(fenicsfunc, :plot)
+export plot
+
 
 ############################################
 #    ufi      https://fenicsproject.org/pub/documents/ufl/ufl-user-manual/ufl-user-manual.pdf
 ############################################
 
 push!(fenicsclass, [:FiniteElement, :MixedElement])
-push!(fenicsclass, :MixedElement)
 export FiniteElement, MixedElement
 
 #import Base: div, sqrt  # must be explicitly imported to be extended

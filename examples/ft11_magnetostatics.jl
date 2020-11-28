@@ -8,6 +8,7 @@
 
 using PyCall
 using FenicsPy
+import PyPlot
 
 a = 1.0   # inner radius of iron cylinder
 b = 1.2   # outer radius of iron cylinder
@@ -106,5 +107,3 @@ vtkfile_B = File("magnetostatics/field.pvd")
 vtkfile_A_z << A_z
 vtkfile_B << B
 
-# Hold plot
-#interactive()

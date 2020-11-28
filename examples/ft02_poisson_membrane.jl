@@ -60,6 +60,3 @@ vtkfile_p << p
 #plt.savefig('poisson_membrane/curves.pdf')
 #plt.savefig('poisson_membrane/curves.png')
 
-# Hold plots
-#interactive()
-#plt.show()

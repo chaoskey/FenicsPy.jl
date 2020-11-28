@@ -97,5 +97,3 @@ for n = 1:num_steps
     #progress.update(t / T)
 end
 
-# Hold plot
-#interactive()
