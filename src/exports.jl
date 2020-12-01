@@ -1,11 +1,21 @@
 # must be explicitly imported to be extended
-import Base: getproperty, *, +, -, /, ^, ==, <<, sqrt, div, split
+import Base: getproperty, *, +, -, /, ^, ==, <<, abs, sign, sqrt, exp,  cos, sin, tan, acos, asin, atan,  cosh, sinh, tanh, split, inv, transpose, div, diff
+
+############################################
+#
+#    dolfin.cpp.la
+#
+# https://fenicsproject.org/docs/dolfin/2017.2.0/python/programmers-reference/cpp/la/index.html
+#
+############################################
 
 @pyclass fenics Matrix FeObject FeMatrix
 @pyclass fenics Vector FeObject FeVector
 @pyclass fenics PETScVector FeVector
-export FeMatrix, FeVector, PETScVector
+@pyclass fenics LUSolver
+@pyclass fenics KrylovSolver
 
+export FeMatrix, FeVector, LUSolver, KrylovSolver
 
 ############################################
 #
@@ -29,7 +39,8 @@ export FeMatrix, FeVector, PETScVector
 @pyfunc fenics TestFunction
 @pyfunc fenics TestFunctions
 
-export Constant, Expression, FeFunction, FunctionSpace, interpolate, VectorFunctionSpace, TrialFunction, TestFunction, TestFunctions, FacetNormal
+export Constant, Expression, FeFunction, FunctionSpace, FacetNormal, 
+       interpolate, VectorFunctionSpace, TrialFunction, TestFunction, TestFunctions
 
 ############################################
 #
@@ -43,11 +54,12 @@ export Constant, Expression, FeFunction, FunctionSpace, interpolate, VectorFunct
 
 @pyclass fenics Mesh
 @pyclass fenics MeshFunction
+@pyclass fenics SubDomain
 
 # no need to export
 @pyclass fenics MeshDomains
 
-export Mesh, MeshFunction
+export Mesh, MeshFunction, SubDomain
 
 ############################################
 #
@@ -73,6 +85,10 @@ export BoxMesh, RectangleMesh, UnitSquareMesh
 #
 ############################################
 
+@pyclass fenics LinearVariationalProblem
+@pyclass fenics LinearVariationalSolver
+@pyclass fenics NonlinearVariationalProblem
+@pyclass fenics NonlinearVariationalSolver
 @pyclass fenics DirichletBC
 
 @pyfunc fenics assemble
@@ -88,7 +104,8 @@ function split(fun::FeFunction)
      return expr_vec
 end
 
-export DirichletBC, assemble, errornorm, project, solve
+export LinearVariationalProblem, LinearVariationalSolver, NonlinearVariationalProblem, NonlinearVariationalSolver, DirichletBC, 
+       assemble, errornorm, project, solve
 
 ############################################
 #
@@ -121,11 +138,12 @@ export plot
 # https://fenicsproject.org/pub/documents/ufl/ufl-user-manual/ufl-user-manual.pdf
 #
 ############################################
+
+OpType = Union{Expression, FeFunction}
+
 @pyclass ufl Cell
 @pyclass fenics FiniteElement
 @pyclass fenics MixedElement
-
-export FiniteElement, MixedElement
 
 #import Base: div, sqrt  # must be explicitly imported to be extended
 
@@ -157,23 +175,73 @@ export FiniteElement, MixedElement
 @pyclass ufl NablaGrad Expression
 @pyclass ufl NablaDiv Expression
 
-@pyfunc fenics grad
-@pyfunc fenics nabla_grad
-@pyfunc fenics dot
+# Tensor algebra operators
+
+@pyfunc fenics outer
 @pyfunc fenics inner
+@pyfunc fenics dot
+@pyfunc fenics cross
+@pyfunc ufl perp
+@pyfunc fenics det
+inv(u::OpType) = Expression(fenics.inv(u.pyobject)) # Base.inv
+@pyfunc ufl cofac
+transpose(u::OpType) = Expression(ufl.transpose(u.pyobject)) # Base.transpose
+@pyfunc fenics tr
+@pyfunc ufl diag
+@pyfunc ufl diag_vector
+@pyfunc fenics dev
+@pyfunc fenics skew
 @pyfunc fenics sym
+
+# Differential operators
+
+@pyfunc fenics variable
+diff(u::OpType) = Expression(fenics.diff(u.pyobject))  # Base.diff
+@pyfunc fenics grad
+div(u::OpType) = Expression(fenics.div(u.pyobject)) # Base.div
+@pyfunc fenics nabla_grad
+@pyfunc ufl nabla_div
+@pyfunc fenics Dx
+@pyfunc ufl Dn
+@pyfunc fenics curl
+@pyfunc ufl rot
+
+# Nonlinear functions
+
+@pyfunc ufl max_value
+@pyfunc ufl min_value
+abs(u::OpType) = Expression(fenics.abs(u.pyobject)) # Base.abs
+sign(u::OpType) = Expression(fenics.sign(u.pyobject)) # Base.sign
+sqrt(u::OpType) = Expression(fenics.sqrt(u.pyobject)) # Base.sqrt
+exp(u::OpType) = Expression(fenics.exp(u.pyobject)) # Base.exp
+@pyfunc fenics ln
+@pyfunc fenics erf
+cos(u::OpType) = Expression(fenics.cos(u.pyobject)) # Base.cos
+sin(u::OpType) = Expression(fenics.sin(u.pyobject)) # Base.sin
+tan(u::OpType) = Expression(fenics.tan(u.pyobject)) # Base.tan
+acos(u::OpType) = Expression(fenics.acos(u.pyobject)) # Base.acos
+asin(u::OpType) = Expression(fenics.asin(u.pyobject)) # Base.asin
+atan(u::OpType) = Expression(fenics.atan(u.pyobject)) # Base.atan
+@pyfunc ufl atan_2
+cosh(u::OpType) = Expression(fenics.cosh(u.pyobject)) # Base.cosh
+sinh(u::OpType) = Expression(fenics.sinh(u.pyobject)) # Base.sinh
+tanh(u::OpType) = Expression(fenics.tanh(u.pyobject)) # Base.tanh
+@pyfunc fenics bessel_J
+@pyfunc fenics bessel_Y
+@pyfunc fenics bessel_I
+@pyfunc fenics bessel_K
+
+# Form transformations
+
 @pyfunc fenics lhs
 @pyfunc fenics rhs
 
-@pyfunc ufl nabla_div
-
-OpType = Union{Expression, FeFunction}
-
-tr(u::OpType) = Expression(fenics.tr(u.pyobject))
-div(u::OpType) = Expression(fenics.div(u.pyobject))
-sqrt(u::OpType) = Expression(fenics.sqrt(u.pyobject))
-
-export Measure, Identity, nabla_div, grad, nabla_grad, dot, tr, inner, sym, lhs, rhs
+export FiniteElement, MixedElement,
+       Measure, Identity, 
+       outer, inner, dot, cross, perp, det, cofac, tr, diag, diag_vector, dev, skew, sym, 
+       variable, grad, nabla_div, nabla_grad, Dx, Dn, curl, rot, 
+       max_value, min_value, ln, erf, atan_2, bessel_J, bessel_Y, bessel_I, bessel_K,
+       lhs, rhs
 
 ############################################
 #
@@ -186,12 +254,26 @@ export Measure, Identity, nabla_div, grad, nabla_grad, dot, tr, inner, sym, lhs,
 # no need to export
 @pyclass mshr CSGGeometry
 
+# 2D primitives
 @pyclass mshr Rectangle CSGGeometry
 @pyclass mshr Circle CSGGeometry
+@pyclass mshr Polygon CSGGeometry
+@pyclass mshr Ellipse CSGGeometry
+
+# 3D primitives
+@pyclass mshr Cylinder CSGGeometry
+@pyclass mshr Box CSGGeometry
+@pyclass mshr Surface3D CSGGeometry
+@pyclass mshr Cone CSGGeometry
+@pyclass mshr Ellipsoid CSGGeometry
+@pyclass mshr Sphere CSGGeometry
+@pyclass mshr Tetrahedron CSGGeometry
 
 @pyfunc mshr generate_mesh
 
-export Rectangle, Circle, generate_mesh
+export Rectangle, Circle, Polygon, Ellipse,
+       Cylinder, Box, Surface3D, Cone, Ellipsoid, Sphere, Tetrahedron, 
+       generate_mesh
 
 ############################################
 #
