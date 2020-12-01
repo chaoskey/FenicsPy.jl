@@ -23,7 +23,7 @@ mesh = Mesh("navier_stokes_cylinder/cylinder.xml.gz")
 W = VectorFunctionSpace(mesh, "P", 2)
 
 # Define function space for system of concentrations
-P1 = FiniteElement("P", fenics.triangle, 1)
+P1 = FiniteElement("P", triangle, 1)
 element = MixedElement([P1, P1, P1])
 V = FunctionSpace(mesh, element)
 
@@ -51,13 +51,13 @@ K = Constant(K)
 eps = Constant(eps)
 
 # Define variational problem
-F = ((u_1 - u_n1) / Δt)*v_1*dx + dot(w, grad(u_1))*v_1*dx \
-  + eps*dot(grad(u_1), grad(v_1))*dx + K*u_1*u_2*v_1*dx  \
-  + ((u_2 - u_n2) / Δt)*v_2*dx + dot(w, grad(u_2))*v_2*dx \
-  + eps*dot(grad(u_2), grad(v_2))*dx + K*u_1*u_2*v_2*dx  \
-  + ((u_3 - u_n3) / Δt)*v_3*dx + dot(w, grad(u_3))*v_3*dx \
-  + eps*dot(grad(u_3), grad(v_3))*dx - K*u_1*u_2*v_3*dx + K*u_3*v_3*dx \
-  - f_1*v_1*dx - f_2*v_2*dx - f_3*v_3*dx
+F = ((u_1 - u_n1) / Δt)*v_1*dx + dot(w, grad(u_1))*v_1*dx + 
+  eps*dot(grad(u_1), grad(v_1))*dx + K*u_1*u_2*v_1*dx  + 
+  ((u_2 - u_n2) / Δt)*v_2*dx + dot(w, grad(u_2))*v_2*dx + 
+  eps*dot(grad(u_2), grad(v_2))*dx + K*u_1*u_2*v_2*dx  + 
+  ((u_3 - u_n3) / Δt)*v_3*dx + dot(w, grad(u_3))*v_3*dx + 
+  eps*dot(grad(u_3), grad(v_3))*dx - K*u_1*u_2*v_3*dx + K*u_3*v_3*dx - 
+  f_1*v_1*dx - f_2*v_2*dx - f_3*v_3*dx
 
 # Create time series for reading velocity data
 timeseries_w = TimeSeries("navier_stokes_cylinder/velocity_series")
@@ -73,7 +73,7 @@ vtkfile_u_3 = File("reaction_system/u_3.pvd")
 
 # Time-stepping
 t = 0
-for n = 1:num_steps
+for i = 1:num_steps
 
     # Update current time
     global t += Δt

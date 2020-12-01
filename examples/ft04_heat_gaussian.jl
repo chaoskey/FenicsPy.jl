@@ -51,7 +51,7 @@ for n = 1:num_steps
 
     # Save to file and plot solution
     vtkfile << (u, t)
-    plot(u)
+    #plot(u)
 
     # Update previous solution
     u_n.assign(u)

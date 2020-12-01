@@ -1,19 +1,11 @@
-mshrfunc = []
-mshrclass = []
+# must be explicitly imported to be extended
+import Base: getproperty, *, +, -, /, ^, ==, <<, sqrt, div, split
 
-fenicsfunc = []
-fenicsclass = []
+@pyclass fenics Matrix FeObject FeMatrix
+@pyclass fenics Vector FeObject FeVector
+@pyclass fenics PETScVector FeVector
+export FeMatrix, FeVector, PETScVector
 
-uflfunc = []
-uflclass = []
-
-export dx, ds, dS, dP
-
-array(matrix) = matrix.gather_on_zero()
-export array
-
-push!(fenicsfunc, :as_vector)
-export as_vector
 
 ############################################
 #
@@ -25,11 +17,19 @@ export as_vector
 #
 ############################################
 
-#import Base: Function  # must be explicitly imported to be extended
+@pyclass fenics Expression
+@pyclass fenics Constant Expression
+@pyclass ufl FacetNormal Expression
+@pyclass fenics Function FeObject FeFunction
+@pyclass fenics FunctionSpace
 
-push!(fenicsclass, [:Constant, :Expression, [:Function, :FeFunction], :FunctionSpace])
-push!(fenicsfunc, [:interpolate, :VectorFunctionSpace, :TrialFunction, :TestFunction, :FacetNormal])
-export Constant, Expression, FeFunction, FunctionSpace, interpolate, VectorFunctionSpace, TrialFunction, TestFunction, FacetNormal
+@pyfunc fenics interpolate
+@pyfunc fenics VectorFunctionSpace
+@pyfunc fenics TrialFunction
+@pyfunc fenics TestFunction
+@pyfunc fenics TestFunctions
+
+export Constant, Expression, FeFunction, FunctionSpace, interpolate, VectorFunctionSpace, TrialFunction, TestFunction, TestFunctions, FacetNormal
 
 ############################################
 #
@@ -41,7 +41,12 @@ export Constant, Expression, FeFunction, FunctionSpace, interpolate, VectorFunct
 #
 ############################################
 
-push!(fenicsclass, [:Mesh, :MeshFunction])
+@pyclass fenics Mesh
+@pyclass fenics MeshFunction
+
+# no need to export
+@pyclass fenics MeshDomains
+
 export Mesh, MeshFunction
 
 ############################################
@@ -52,7 +57,10 @@ export Mesh, MeshFunction
 #
 ############################################
 
-push!(fenicsclass, [:BoxMesh, :RectangleMesh, :UnitSquareMesh])
+@pyclass fenics BoxMesh
+@pyclass fenics RectangleMesh
+@pyclass fenics UnitSquareMesh
+
 export BoxMesh, RectangleMesh, UnitSquareMesh
 
 ############################################
@@ -64,9 +72,23 @@ export BoxMesh, RectangleMesh, UnitSquareMesh
 # https://fenicsproject.org/docs/dolfin/2017.2.0/python/programmers-reference/fem/index.html
 #
 ############################################
-push!(fenicsclass, [:DirichletBC, :AutoSubDomain])
-push!(fenicsfunc, [:assemble, :split, :errornorm, :project, :solve])
-export DirichletBC, AutoSubDomain, assemble, split, errornorm, project, solve
+
+@pyclass fenics DirichletBC
+
+@pyfunc fenics assemble
+@pyfunc fenics errornorm
+@pyfunc fenics project
+@pyfunc fenics solve
+
+#import Base: split  # must be explicitly imported to be extended
+
+function split(fun::FeFunction)
+     vec = fenics.split(fun.pyobject)
+     expr_vec = [FeFunction(spl) for spl in vec]
+     return expr_vec
+end
+
+export DirichletBC, assemble, errornorm, project, solve
 
 ############################################
 #
@@ -76,7 +98,7 @@ export DirichletBC, AutoSubDomain, assemble, split, errornorm, project, solve
 #
 ############################################
 
-push!(fenicsclass, :Point)
+@pyclass fenics Point
 export Point
 
 ############################################
@@ -87,30 +109,88 @@ export Point
 #
 ############################################
 
-push!(fenicsfunc, :plot)
+@pyfunc fenics plot
 export plot
 
 
 ############################################
-#    ufi      https://fenicsproject.org/pub/documents/ufl/ufl-user-manual/ufl-user-manual.pdf
+#
+#    ufi      
+#
+# https://fenicsproject.org/docs/ufl/1.6.0/ufl.html
+# https://fenicsproject.org/pub/documents/ufl/ufl-user-manual/ufl-user-manual.pdf
+#
 ############################################
+@pyclass ufl Cell
+@pyclass fenics FiniteElement
+@pyclass fenics MixedElement
 
-push!(fenicsclass, [:FiniteElement, :MixedElement])
 export FiniteElement, MixedElement
 
 #import Base: div, sqrt  # must be explicitly imported to be extended
 
-push!(fenicsclass, [:Measure, :Identity])
-push!(fenicsfunc, [:div, :grad, :nabla_grad, :dot, :tr, :sqrt, :inner, :sym, :lhs, :rhs])
-push!(uflfunc, :nabla_div)
-export Measure, Identity, div, nabla_div, grad, nabla_grad, dot, tr, sqrt, inner, sym, lhs, rhs
+@pyclass fenics Measure
+@pyclass fenics Identity Expression
+
+# no need to export
+@pyclass fenics Form Expression
+@pyclass ufl Argument Expression
+
+# no need to export
+# not exported in `feincs` and `ufl` 
+
+@pyclass ufl Equation Expression
+
+# < Operator < Expr
+@pyclass ufl ListTensor Expression
+@pyclass ufl ComponentTensor Expression
+@pyclass ufl Indexed Expression
+
+# < CompoundTensorOperator < Operator < Expr
+@pyclass ufl Transposed Expression
+@pyclass ufl Inner Expression
+@pyclass ufl Dot Expression
+@pyclass ufl Sym Expression
+
+# < CompoundDerivative < Derivative < Operator < Expr
+@pyclass ufl Grad Expression
+@pyclass ufl NablaGrad Expression
+@pyclass ufl NablaDiv Expression
+
+@pyfunc fenics grad
+@pyfunc fenics nabla_grad
+@pyfunc fenics dot
+@pyfunc fenics inner
+@pyfunc fenics sym
+@pyfunc fenics lhs
+@pyfunc fenics rhs
+
+@pyfunc ufl nabla_div
+
+OpType = Union{Expression, FeFunction}
+
+tr(u::OpType) = Expression(fenics.tr(u.pyobject))
+div(u::OpType) = Expression(fenics.div(u.pyobject))
+sqrt(u::OpType) = Expression(fenics.sqrt(u.pyobject))
+
+export Measure, Identity, nabla_div, grad, nabla_grad, dot, tr, inner, sym, lhs, rhs
 
 ############################################
+#
 #    mshr
+#
+# https://bitbucket.org/fenics-project/mshr/wiki/Home
+#
 ############################################
 
-push!(mshrclass, [:Rectangle, :Circle])
-push!(mshrfunc, [:generate_mesh])
+# no need to export
+@pyclass mshr CSGGeometry
+
+@pyclass mshr Rectangle CSGGeometry
+@pyclass mshr Circle CSGGeometry
+
+@pyfunc mshr generate_mesh
+
 export Rectangle, Circle, generate_mesh
 
 ############################################
@@ -121,9 +201,10 @@ export Rectangle, Circle, generate_mesh
 #
 ############################################
 
-push!(fenicsclass, [:File, :XDMFFile])
-export File, XDMFFile
+@pyclass fenics File
+@pyclass fenics XDMFFile
 
+export File, XDMFFile
 
 ############################################
 #
@@ -133,13 +214,67 @@ export File, XDMFFile
 #
 ############################################
 
-push!(fenicsclass, [:TimeSeries])
+@pyclass fenics TimeSeries
 export TimeSeries
 
-fenicsclass = vcat(fenicsclass...)
-fenicsfunc = vcat(fenicsfunc...)
-mshrclass = vcat(mshrclass...)
-mshrfunc = vcat(mshrfunc...)
-uflclass = vcat(uflclass...)
-uflfunc = vcat(uflfunc...)
+############################################
+#    Operator
+############################################
+
+#import Base: +, -, *, /, ^, ==, <<   # must be explicitly imported to be extended
+
+*(expr1::OpType , expr2::Measure) = Expression(expr2.pyobject.__rmul__(expr1.pyobject) )
+
+*(expr1::OpType , expr2::OpType ) = Expression(expr1.pyobject.__mul__(expr2.pyobject) )
+*(expr1::Real, expr2::OpType) = Expression(expr2.pyobject.__mul__(expr1) )
+*(expr1::OpType , expr2::Real) = Expression(expr1.pyobject.__mul__(expr2) )
+
++(expr1::OpType, expr2::Real) = Expression(expr1.pyobject.__add__(expr2) )
++(expr1::Real, expr2::OpType) = Expression(expr2.pyobject.__add__(expr1) )
++(expr1::OpType, expr2::OpType) = Expression(expr1.pyobject.__add__(expr2.pyobject) )
+
+-(expr::OpType) = (-1)*expr
+-(expr1::OpType, expr2::Real) = Expression(expr1.pyobject.__sub__(expr2) )
+-(expr1::Real, expr2::OpType) = (-1)*(Expression(expr2.pyobject.__sub__(expr1) ))
+-(expr1::OpType, expr2::OpType) = Expression(expr1.pyobject.__sub__(expr2.pyobject) )
+
+/(expr1::OpType, expr2::Real) = Expression(expr1.pyobject.__div__(expr2) )
+/(expr1::OpType, expr2::OpType) = Expression(expr1.pyobject.__div__(expr2.pyobject) )
+/(expr1::Real,expr2::OpType) = (expr1 * expr2) / (expr2 * expr2)
+
+^(expr1::OpType, expr2::Real) = Expression(expr1.pyobject.__pow__(expr2) )
+^(expr1::OpType, expr2::OpType) = Expression(expr1.pyobject.__pow__(expr2.pyobject) )
+
+
+==(expr1::OpType, expr2::OpType) = Expression(expr1.pyobject == expr2.pyobject)
+==(expr1::OpType, expr2::Real) = Expression(expr1.pyobject == expr2)
+==(expr1::Real, expr2::OpType) = Expression(expr2.pyobject == expr1)
+
+<<(file::File, u::Mesh) =  file.pyobject << u.pyobject
+<<(file::File, u::FeFunction) =  file.pyobject << u.pyobject
+<<(file::File, u::Tuple{FeFunction,Real}) =  file.pyobject <<  (u[1].pyobject, u[2])
+
++(geo1::CSGGeometry, geo2::CSGGeometry) = CSGGeometry(geo1.pyobject + geo2.pyobject)
+-(geo1::CSGGeometry, geo2::CSGGeometry) = CSGGeometry(geo1.pyobject - geo2.pyobject) 
+
+#array(matrix::FeMatrix) = matrix.pyobject.gather_on_zero()
+array(form::Expression) =  array(assemble(form)).gather_on_zero()
+function array(solution::FeFunction)
+    generic_vector = solution.pyobject.vector()
+    instantiated_vector = fenics.Vector(generic_vector)
+    instantiated_vector.gather_on_zero()
+end
+export array
+
+len(U::OpType) = length(U.pyobject)
+export len
+
+@pyfunc fenics as_vector
+export as_vector
+
+
+
+
+
+
 

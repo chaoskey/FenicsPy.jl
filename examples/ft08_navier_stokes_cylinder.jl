@@ -65,7 +65,7 @@ end
 
 # Define stress tensor
 function σ(u, p)
-    return 2*μ*ϵ(u) - p*Identity(length(u))
+    return 2*μ*ϵ(u) - p*Identity(len(u))
 end
 
 # Define variational problem for step 1
@@ -104,9 +104,7 @@ timeseries_p = TimeSeries("navier_stokes_cylinder/pressure_series")
 File("navier_stokes_cylinder/cylinder.xml.gz") << mesh
 
 t = 0
-try
-
-for n in 0:(num_steps-1)
+for i in 1:num_steps
 
     # Update current time
     global t += Δt
@@ -132,18 +130,14 @@ for n in 0:(num_steps-1)
 
 
     # Plot solution
-    plot(u_)
-    plot(p_)
+    #plot(u_)
+    #plot(p_)
 
     #update values
     u_n.assign(u_)
     p_n.assign(p_)
     
-    println("第", n, "步:  max u = ", max(array(u_.vector())...))
-end
-
-catch ex
-    println(ex)
+    println("第", i, "步:  max u = ", max(array(u_)...))
 end
 
 

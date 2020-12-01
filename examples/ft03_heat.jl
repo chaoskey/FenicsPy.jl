@@ -49,22 +49,23 @@ for n = 1:num_steps
 
     # Update current time
     global t += Δt
-    u_D.t = t
+    #u_D.t = t
 
     # Compute solution
     solve(a == L, u, bc)
 
     # Plot solution
-    plot(u)
+    #plot(u)
 
     # Compute error at vertices
     u_e = interpolate(u_D, V)
-    error = max(abs.(array(u_e.vector())-array(u.vector()))...)
+    error = max(abs.(array(u_e)-array(u))...)
     println("t = ", t, "\t error = ", error)
 
     # Update previous solution
     u_n.assign(u)
 
 end
+
 
 

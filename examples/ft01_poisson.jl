@@ -30,20 +30,20 @@ u = FeFunction(V)
 solve(a == L, u, bc)
 
 # Save solution to file in VTK format
-#vtkfile = File("poisson/solution.pvd")
-#vtkfile << u
+vtkfile = File("poisson/solution.pvd")
+vtkfile << u
 
 # Compute error in L2 norm
-#error_L2 = errornorm(u_D, u, "L2")
+error_L2 = errornorm(u_D, u, "L2")
 
 # Compute maximum error at vertices
-#vertex_values_u_D = u_D.compute_vertex_values(mesh)
-#vertex_values_u = u.compute_vertex_values(mesh)
-#error_max = max(abs.(vertex_values_u_D - vertex_values_u)...)
+vertex_values_u_D = u_D.compute_vertex_values(mesh)
+vertex_values_u = u.compute_vertex_values(mesh)
+error_max = max(abs.(vertex_values_u_D - vertex_values_u)...)
 
 # Print errors
-#println("error_L2  =", error_L2)
-#println("error_max =", error_max)
+println("error_L2  =", error_L2)
+println("error_max =", error_max)
 
 # Plot solution and mesh
 import PyPlot

@@ -53,7 +53,7 @@ f   = Constant((0, 0))
 ϵ(u) = sym(nabla_grad(u))
 
 # Define stress tensor
-σ(u, p) = 2*μ*ϵ(u) - p*Identity(length(u))
+σ(u, p) = 2*μ*ϵ(u) - p*Identity(len(u))
 
 # Define variational problem for step 1
 F1 = ρ*dot((u - u_n) / Δt, v)*dx + 
@@ -83,7 +83,7 @@ A3 = assemble(a3)
 
 # Time-stepping
 t = 0
-for n = 1:num_steps
+for i in 1:num_steps
 
     # Update current time
     global t += Δt
@@ -103,14 +103,14 @@ for n = 1:num_steps
     solve(A3, u_.vector(), b3)
 
     # Plot solution
-    plot(u_)
+    # plot(u_)
 
     # Compute error
     u_e = Expression(("4*x[1]*(1.0 - x[1])", "0"), degree=2)
     u_e = interpolate(u_e, V)
-    error = max(abs.(array(u_e.vector()) - array(u_.vector()))...)
+    error = max(abs.(array(u_e) - array(u_))...)
     println("t = ", t, ", \t error = ", error)
-    println("max u:", max(array(u_.vector())...))
+    println("max u:", max(array(u_)...))
 
     # Update previous solution
     u_n.assign(u_)

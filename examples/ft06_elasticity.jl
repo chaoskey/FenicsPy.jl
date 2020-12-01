@@ -47,27 +47,32 @@ L = dot(f, v)*dx + dot(T, v)*ds
 u = FeFunction(V)
 solve(a == L, u, bc)
 
-# Plot solution
-plot(u, title="Displacement", mode="displacement")
-
-# Plot stress
+# Compute stress
 s = σ(u) - (1.0/3)*tr(σ(u))*Identity(d)  # deviatoric stress
 von_Mises = sqrt(3.0/2*inner(s, s))
 V = FunctionSpace(mesh, "P", 1)
 von_Mises = project(von_Mises, V)
-plot(von_Mises, title="Stress intensity")
 
 # Compute magnitude of displacement
 u_magnitude = sqrt(dot(u, u))
 u_magnitude = project(u_magnitude, V)
-plot(u_magnitude, "Displacement magnitude")
 println("min/max u:",
-      min(array(u_magnitude.vector())...),
-      max(array(u_magnitude.vector())...)
+      min(array(u_magnitude)...),
+      max(array(u_magnitude)...)
 )
 
 # Save solution to file in VTK format
 File("elasticity/displacement.pvd") << u
 File("elasticity/von_mises.pvd") << von_Mises
 File("elasticity/magnitude.pvd") << u_magnitude
+
+
+# Plot solution
+#plot(u, title="Displacement", mode="displacement")
+
+# Plot stress
+#plot(von_Mises, title="Stress intensity")
+
+# Plot magnitude of displacement
+#plot(u_magnitude, "Displacement magnitude")
 

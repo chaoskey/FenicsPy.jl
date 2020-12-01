@@ -33,16 +33,17 @@ L = p*v*dx
 w = FeFunction(V)
 solve(a == L, w, bc)
 
-# Plot solution
 p = interpolate(p, V)
-#plot(w, title="Deflection")
-#plot(p, title="Load")
 
 # Save solution to file in VTK format
 vtkfile_w = File("poisson_membrane/deflection.pvd")
 vtkfile_w << w
 vtkfile_p = File("poisson_membrane/load.pvd")
 vtkfile_p << p
+
+# Plot solution
+plot(w, title="Deflection")
+plot(p, title="Load")
 
 # Curve plot along x = 0 comparing p and w
 #import numpy as np

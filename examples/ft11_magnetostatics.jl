@@ -79,7 +79,7 @@ J_S = Constant(-1.0)
     end
 end
 
-μ = Permeability(markers, degree=1)
+μ = Expression(Permeability(markers, degree=1))
 
 # Define variational problem
 A_z = TrialFunction(V)
