@@ -42,8 +42,8 @@ vtkfile_p = File("poisson_membrane/load.pvd")
 vtkfile_p << p
 
 # Plot solution
-plot(w, title="Deflection")
-plot(p, title="Load")
+#plot(w, title="Deflection")
+#plot(p, title="Load")
 
 # Curve plot along x = 0 comparing p and w
 #import numpy as np

@@ -7,9 +7,8 @@
 ###############################################
 
 using FenicsPy
-import PyPlot
 
-# Parameters：ρ,μ,Δt
+# 参数：ρ,μ,Δt
 T = 5            
 num_steps = 5000  
 Δt = T / num_steps 
@@ -17,10 +16,10 @@ num_steps = 5000
 ρ = 1
 
 # Create mesh
-channel = Rectangle(Point(0.0, 0.0), Point(2.2, 0.41))
-cylinder = Circle(Point(0.2, 0.2), 0.05)
+channel = Rectangle(Point([0.0, 0.0]), Point([2.2, 0.41]))
+cylinder = Circle(Point([0.2, 0.2]), 0.05)
 Ω = channel - cylinder
-mesh = generate_mesh(Ω, 2*64)
+mesh = generate_mesh(Ω, 64)
 
 # Define function spaces
 V = VectorFunctionSpace(mesh, "P", 2)
@@ -40,7 +39,7 @@ bcu_inflow = DirichletBC(V, Expression(inflow_profile, degree=2), inflow)
 bcu_walls = DirichletBC(V, Constant((0, 0)), walls)
 bcu_cylinder = DirichletBC(V, Constant((0, 0)), cylinder)
 bcp_outflow = DirichletBC(Q, Constant(0), outflow)
-bcu = [bcu_inflow, bcu_walls, bcu_cylinder]
+bcu = [bcu_inflow,bcu_walls,bcu_cylinder]
 bcp = [bcp_outflow]
 
 u = TrialFunction(V)
@@ -104,9 +103,6 @@ timeseries_p = TimeSeries("navier_stokes_cylinder/pressure_series")
 File("navier_stokes_cylinder/cylinder.xml.gz") << mesh
 
 t = 0
-
-try
-
 for i in 1:num_steps
 
     # Update current time
@@ -123,30 +119,24 @@ for i in 1:num_steps
 
     b3 = assemble(L3)
     solve(A3, u_.vector(), b3, "cg", "sor")
-
+    
+    #update values
+    u_n.assign(u_)
+    p_n.assign(p_)
+    
     xdmffile_u.write(u_, t)
     xdmffile_p.write(p_, t)
 
     # Save nodal values to file
     timeseries_u.store(u_.vector(), t)
     timeseries_p.store(p_.vector(), t)
-
-
+        
+    println(i, "/", num_steps, " \t max:", max(array(u_)...))
+        
     # Plot solution
     #plot(u_)
     #plot(p_)
-
-    #update values
-    u_n.assign(u_)
-    p_n.assign(p_)
-    
-    println("第", i, "步:  max u = ", max(array(u_)...))
 end
-
-catch ex
-    println(ex)
-end
-
 
 # 确保文件不被损坏
 xdmffile_u.close()

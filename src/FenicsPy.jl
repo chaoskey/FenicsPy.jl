@@ -4,6 +4,7 @@ using PyCall
 
 # must be explicitly imported to be extended
 import Base: getproperty, split, inv, transpose, div, diff, abs, sign, sqrt, exp,  cos, sin, tan, acos, asin, atan,  cosh, sinh, tanh, *, +, -, /, ^, ==, <<
+import PyPlot: plot
 
 ##################################
 #    Base : FeObject
@@ -216,8 +217,7 @@ function __init__()
 						    
 end
 
-export dx, ds, dS, dP
-
-export tetrahedron, hexahedron, triangle, quadrilateral
+export dx, ds, dS, dP,
+       tetrahedron, hexahedron, triangle, quadrilateral
 
 end # FenicsPy

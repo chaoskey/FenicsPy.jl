@@ -1,13 +1,16 @@
 name = "FenicsPy"
 uuid = "3efbc270-88d0-4c7e-ad96-7b69f887f208"
 authors = ["chaoskey"]
-version = "0.2.0"
+version = "0.1.0"
 
 [deps]
 PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
+PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
 
 [compat]
 PyCall = "1.90"
+PyPlot = "2.9.0"
 julia = "1"
+
 
 

@@ -6,7 +6,6 @@
 ###############################################
 
 using FenicsPy
-import PyPlot
 
 # Scaled variables
 L = 1; W = 0.2

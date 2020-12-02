@@ -46,6 +46,5 @@ println("error_L2  =", error_L2)
 println("error_max =", error_max)
 
 # Plot solution and mesh
-import PyPlot
-plot(u)
-plot(mesh)
+#plot(u)
+#plot(mesh)

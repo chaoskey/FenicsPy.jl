@@ -6,7 +6,6 @@
 
 using FenicsPy
 using SymPy
-import PyPlot
 
 # nonlinear coefficient
 q(u) = 1 + u^2

@@ -7,7 +7,6 @@
 ###############################################
 
 using FenicsPy
-import PyPlot
 
 T = 10.0           # final time
 num_steps = 500    # number of time steps
