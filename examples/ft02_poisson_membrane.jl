@@ -5,6 +5,8 @@
 #The load p is a Gaussian function centered at (0, 0.6).
 ###############################################
 
+module ft02
+
 using FenicsPy
 
 # Create mesh and define function space
@@ -61,3 +63,4 @@ vtkfile_p << p
 #plt.savefig('poisson_membrane/curves.pdf')
 #plt.savefig('poisson_membrane/curves.png')
 
+end # module ft02

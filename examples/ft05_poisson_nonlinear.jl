@@ -4,8 +4,10 @@
 #                   u = u_D on the boundary.
 ###############################################
 
-using FenicsPy
+module ft05
+
 using SymPy
+using FenicsPy
 
 # nonlinear coefficient
 q(u) = 1 + u^2
@@ -50,3 +52,4 @@ u_e = FenicsPy.interpolate(u_D, V)
 error_max = max(abs.(array(u_e) - array(u))...)
 print("error_max = ", error_max)
 
+end # module ft05

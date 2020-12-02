@@ -6,6 +6,8 @@
 #                                 div(u) = 0
 ###############################################
 
+module ft07
+
 using FenicsPy
 
 T = 10.0           # final time
@@ -117,3 +119,4 @@ for i in 1:num_steps
 
 end
 
+end # module ft07

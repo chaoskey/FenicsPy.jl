@@ -8,6 +8,8 @@
 #  u_3' + w . nabla(u_3) - div(eps*grad(u_3)) = f_3 + K*u_1*u_2 - K*u_3
 ###############################################
 
+module ft09
+
 using FenicsPy
 
 T = 5.0            # final time
@@ -97,3 +99,4 @@ for i = 1:num_steps
     #progress.update(t / T)
 end
 
+end # module ft09

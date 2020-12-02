@@ -12,5 +12,12 @@ PyCall = "1.90"
 PyPlot = "2.9.0"
 julia = "1"
 
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+SymPy = "24249f21-da20-56a4-8eb1-6a02cf4ae2e6"
+
+[targets]
+test = ["Test", "SymPy"]
+
 
 

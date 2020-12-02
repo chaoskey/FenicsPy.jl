@@ -6,6 +6,8 @@
 #                                 div(u) = 0
 ###############################################
 
+module ft08
+
 using FenicsPy
 
 # 参数：ρ,μ,Δt
@@ -138,6 +140,7 @@ for i in 1:num_steps
     #plot(p_)
 end
 
-# 确保文件不被损坏
 xdmffile_u.close()
 xdmffile_p.close()
+
+end # module ft08

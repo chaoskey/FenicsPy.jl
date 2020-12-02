@@ -7,6 +7,8 @@
 #The initial condition u_0 is chosen as a Gaussian hill.
 ###############################################
 
+module ft04
+
 using FenicsPy
 
 T = 2.0            # final time
@@ -56,3 +58,4 @@ for n = 1:num_steps
     u_n.assign(u)
 end
 
+end # module ft04

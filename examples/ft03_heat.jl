@@ -8,6 +8,8 @@
 #  f = β - 2 - 2*α
 ###############################################
 
+module ft03
+
 using FenicsPy
 
 T = 2.0            # final time
@@ -66,5 +68,5 @@ for n = 1:num_steps
 
 end
 
-
+end # module ft03
 

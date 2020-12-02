@@ -6,6 +6,8 @@
 #  -Laplace(A_z) = μ_0 * J_z
 ###############################################
 
+module ft11
+
 using PyCall
 using FenicsPy
 
@@ -106,3 +108,4 @@ vtkfile_B = File("magnetostatics/field.pvd")
 vtkfile_A_z << A_z
 vtkfile_B << B
 
+end # module ft11

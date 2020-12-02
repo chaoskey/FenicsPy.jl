@@ -7,6 +7,8 @@
 #    f = -6
 ###########################################################
 
+module ft01
+
 using FenicsPy
 
 # Create mesh and define function space
@@ -48,3 +50,5 @@ println("error_max =", error_max)
 # Plot solution and mesh
 #plot(u)
 #plot(mesh)
+
+end # module ft01

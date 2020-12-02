@@ -5,6 +5,8 @@
 #its left end and deformed under its own weight.
 ###############################################
 
+module ft06
+
 using FenicsPy
 
 # Scaled variables
@@ -75,3 +77,4 @@ File("elasticity/magnitude.pvd") << u_magnitude
 # Plot magnitude of displacement
 #plot(u_magnitude, "Displacement magnitude")
 
+end # module ft06

@@ -23,6 +23,13 @@ import Pkg; Pkg.add("https://github.com/chaoskey/FenicsPy.jl")
 pkg > add https://github.com/chaoskey/FenicsPy.jl
 ```
 
+3. 测试（目前就是把所有例子执行一遍，时间比较长，慎重执行）
+
+```julia
+]
+pkg > test FenicsPy
+```
+
 ## 文档
 
 由于使用方法完全和Python版本的FEniCS一样，所以完全可以参考FEniCS官方文档。

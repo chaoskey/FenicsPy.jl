@@ -142,7 +142,7 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
         ###############################
         $(alias)(args::FeType...; kwargs...) = begin
             _args, _kwargs = args_conv(args...; kwargs...)
-            name = haskey($_module, $name) ? $name : $_base
+            name = hasproperty($_module, $name) ? $name : $_base
             _obj = getproperty($_module, name)(_args...; _kwargs...)
             $impl(_obj)
         end
@@ -152,7 +152,7 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
         #     p.x()    # = 1.2
         #     p.pyobject
         ###############################
-	function getproperty(_obj::$impl, _sym::Symbol)
+        function getproperty(_obj::$impl, _sym::Symbol)
             if _sym === :pyobject
 	        return getfield(_obj, _sym)
             end
