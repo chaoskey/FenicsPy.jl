@@ -1,6 +1,3 @@
-# must be explicitly imported to be extended
-import Base: getproperty, *, +, -, /, ^, ==, <<, abs, sign, sqrt, exp,  cos, sin, tan, acos, asin, atan,  cosh, sinh, tanh, split, inv, transpose, div, diff
-
 ############################################
 #
 #    dolfin.cpp.la
@@ -15,7 +12,12 @@ import Base: getproperty, *, +, -, /, ^, ==, <<, abs, sign, sqrt, exp,  cos, sin
 @pyclass fenics LUSolver
 @pyclass fenics KrylovSolver
 
-export FeMatrix, FeVector, LUSolver, KrylovSolver
+@pyfunc fenics as_tensor
+@pyfunc fenics as_vector
+@pyfunc fenics as_matrix
+
+export FeMatrix, FeVector, LUSolver, KrylovSolver, 
+          as_tensor, as_vector, as_matrix
 
 ############################################
 #
@@ -52,6 +54,7 @@ export Constant, Expression, FeFunction, FunctionSpace, FacetNormal,
 #
 ############################################
 
+# export
 @pyclass fenics Mesh
 @pyclass fenics MeshFunction
 @pyclass fenics SubDomain
@@ -96,8 +99,7 @@ export BoxMesh, RectangleMesh, UnitSquareMesh
 @pyfunc fenics project
 @pyfunc fenics solve
 
-#import Base: split  # must be explicitly imported to be extended
-
+# Base: split
 function split(fun::FeFunction)
      vec = fenics.split(fun.pyobject)
      expr_vec = [FeFunction(spl) for spl in vec]
@@ -129,63 +131,108 @@ export Point
 @pyfunc fenics plot
 export plot
 
+############################################
+#
+#    ufi Cells
+#
+# https://fenicsproject.org/docs/ufl/1.6.0/ufl.html#module-ufl.cell
+#
+############################################
+
+# no need to export
+@pyclass ufl Cell
 
 ############################################
 #
-#    ufi      
+#    ufi Elements    
+#
+# https://fenicsproject.org/docs/ufl/1.6.0/ufl.finiteelement.html
+#
+############################################
+
+@pyclass fenics FiniteElement
+@pyclass fenics MixedElement
+
+export FiniteElement, MixedElement
+
+############################################
+#
+#    ufi Expression
 #
 # https://fenicsproject.org/docs/ufl/1.6.0/ufl.html
-# https://fenicsproject.org/pub/documents/ufl/ufl-user-manual/ufl-user-manual.pdf
 #
+############################################
+
+# no need to export
+@pyclass ufl Argument Expression
+@pyclass fenics Form Expression
+
+# no need to export
+# not exported in `feincs` and `ufl` 
+@pyclass fenics Equation Expression
+
+# export 
+@pyclass fenics Measure
+@pyclass fenics Identity Expression
+@pyfunc fenics lhs
+@pyfunc fenics rhs
+
+export Measure, Identity, lhs, rhs
+
+############################################
+#
+#    ufi Operator
+#
+# https://fenicsproject.org/docs/ufl/1.6.0/ufl.html
+# < Operator < Expr 
+############################################
+
+# no need to export
+@pyclass fenics ListTensor Expression
+@pyclass fenics ComponentTensor Expression
+@pyclass fenics Indexed Expression
+@pyclass fenics Variable Expression
+
+# export
+@pyfunc fenics variable
+
+export variable
+
+############################################
+#
+#    ufi : Tensor algebra operators
+#
+# https://fenicsproject.org/docs/ufl/1.6.0/ufl.html
+# < CompoundTensorOperator < Operator < Expr 
 ############################################
 
 OpType = Union{Expression, FeFunction}
 
-@pyclass ufl Cell
-@pyclass fenics FiniteElement
-@pyclass fenics MixedElement
-
-#import Base: div, sqrt  # must be explicitly imported to be extended
-
-@pyclass fenics Measure
-@pyclass fenics Identity Expression
-
 # no need to export
-@pyclass fenics Form Expression
-@pyclass ufl Argument Expression
-
-# no need to export
-# not exported in `feincs` and `ufl` 
-
-@pyclass ufl Equation Expression
-
-# < Operator < Expr
-@pyclass ufl ListTensor Expression
-@pyclass ufl ComponentTensor Expression
-@pyclass ufl Indexed Expression
-
-# < CompoundTensorOperator < Operator < Expr
-@pyclass ufl Transposed Expression
+# not exported in `feincs` or `ufl`
+@pyclass ufl Outer Expression
 @pyclass ufl Inner Expression
 @pyclass ufl Dot Expression
+@pyclass ufl Cross Expression
+@pyclass ufl Determinant Expression
+@pyclass ufl Inverse Expression
+@pyclass ufl Cofactor Expression
+@pyclass ufl Transposed Expression
+@pyclass ufl Trace Expression
+@pyclass ufl Deviatoric Expression
+@pyclass ufl Skew Expression
 @pyclass ufl Sym Expression
 
-# < CompoundDerivative < Derivative < Operator < Expr
-@pyclass ufl Grad Expression
-@pyclass ufl NablaGrad Expression
-@pyclass ufl NablaDiv Expression
-
-# Tensor algebra operators
-
+# export
 @pyfunc fenics outer
 @pyfunc fenics inner
 @pyfunc fenics dot
 @pyfunc fenics cross
 @pyfunc ufl perp
 @pyfunc fenics det
-inv(u::OpType) = Expression(fenics.inv(u.pyobject)) # Base.inv
+inv(u::OpType) = Inverse(fenics.inv(u.pyobject)) # Base.inv
 @pyfunc ufl cofac
-transpose(u::OpType) = Expression(ufl.transpose(u.pyobject)) # Base.transpose
+transpose(u::OpType) = Transposed(ufl.transpose(u.pyobject)) # Base.transpose
 @pyfunc fenics tr
 @pyfunc ufl diag
 @pyfunc ufl diag_vector
@@ -193,12 +240,28 @@ transpose(u::OpType) = Expression(ufl.transpose(u.pyobject)) # Base.transpose
 @pyfunc fenics skew
 @pyfunc fenics sym
 
-# Differential operators
+export outer, inner, dot, cross, perp, det, cofac, tr, diag, diag_vector, dev, skew, sym
 
-@pyfunc fenics variable
-diff(u::OpType) = Expression(fenics.diff(u.pyobject))  # Base.diff
+############################################
+# Differential operators
+#
+# https://fenicsproject.org/docs/ufl/1.6.0/ufl.html
+# < CompoundDerivative < Derivative < Operator < Expr
+############################################
+
+# no need to export
+# not exported in `feincs` or `ufl`
+@pyclass ufl VariableDerivative Expression
+@pyclass ufl Grad Expression
+@pyclass ufl Div Expression
+@pyclass ufl NablaGrad Expression
+@pyclass ufl NablaDiv Expression
+@pyclass ufl Curl Expression
+
+# export
+diff(f::OpType,v::Variable) = VariableDerivative(fenics.diff(f.pyobject, v.pyobject))  # Base.diff
 @pyfunc fenics grad
-div(u::OpType) = Expression(fenics.div(u.pyobject)) # Base.div
+div(u::OpType) = Div(fenics.div(u.pyobject)) # Base.div
 @pyfunc fenics nabla_grad
 @pyfunc ufl nabla_div
 @pyfunc fenics Dx
@@ -206,7 +269,13 @@ div(u::OpType) = Expression(fenics.div(u.pyobject)) # Base.div
 @pyfunc fenics curl
 @pyfunc ufl rot
 
+export grad, nabla_div, nabla_grad, Dx, Dn, curl, rot
+
+############################################
 # Nonlinear functions
+#
+# https://fenicsproject.org/docs/ufl/1.6.0/ufl.html
+############################################
 
 @pyfunc ufl max_value
 @pyfunc ufl min_value
@@ -231,73 +300,7 @@ tanh(u::OpType) = Expression(fenics.tanh(u.pyobject)) # Base.tanh
 @pyfunc fenics bessel_I
 @pyfunc fenics bessel_K
 
-# Form transformations
-
-@pyfunc fenics lhs
-@pyfunc fenics rhs
-
-export FiniteElement, MixedElement,
-       Measure, Identity, 
-       outer, inner, dot, cross, perp, det, cofac, tr, diag, diag_vector, dev, skew, sym, 
-       variable, grad, nabla_div, nabla_grad, Dx, Dn, curl, rot, 
-       max_value, min_value, ln, erf, atan_2, bessel_J, bessel_Y, bessel_I, bessel_K,
-       lhs, rhs
-
-############################################
-#
-#    mshr
-#
-# https://bitbucket.org/fenics-project/mshr/wiki/Home
-#
-############################################
-
-# no need to export
-@pyclass mshr CSGGeometry
-
-# 2D primitives
-@pyclass mshr Rectangle CSGGeometry
-@pyclass mshr Circle CSGGeometry
-@pyclass mshr Polygon CSGGeometry
-@pyclass mshr Ellipse CSGGeometry
-
-# 3D primitives
-@pyclass mshr Cylinder CSGGeometry
-@pyclass mshr Box CSGGeometry
-@pyclass mshr Surface3D CSGGeometry
-@pyclass mshr Cone CSGGeometry
-@pyclass mshr Ellipsoid CSGGeometry
-@pyclass mshr Sphere CSGGeometry
-@pyclass mshr Tetrahedron CSGGeometry
-
-@pyfunc mshr generate_mesh
-
-export Rectangle, Circle, Polygon, Ellipse,
-       Cylinder, Box, Surface3D, Cone, Ellipsoid, Sphere, Tetrahedron, 
-       generate_mesh
-
-############################################
-#
-#    dolfin.cpp.io module
-#
-# https://fenicsproject.org/docs/dolfin/2018.1.0/python/_autogenerated/dolfin.cpp.io.html
-#
-############################################
-
-@pyclass fenics File
-@pyclass fenics XDMFFile
-
-export File, XDMFFile
-
-############################################
-#
-#    dolfin.cpp.adaptivity
-#
-# https://fenicsproject.org/docs/dolfin/2018.1.0/python/_autogenerated/dolfin.cpp.adaptivity.html?highlight=timeseries#dolfin.cpp.adaptivity.TimeSeries
-#
-############################################
-
-@pyclass fenics TimeSeries
-export TimeSeries
+export max_value, min_value, ln, erf, atan_2, bessel_J, bessel_Y, bessel_I, bessel_K
 
 ############################################
 #    Operator
@@ -332,12 +335,74 @@ export TimeSeries
 ==(expr1::OpType, expr2::Real) = Expression(expr1.pyobject == expr2)
 ==(expr1::Real, expr2::OpType) = Expression(expr2.pyobject == expr1)
 
+############################################
+#
+#    mshr
+#
+# https://bitbucket.org/fenics-project/mshr/wiki/Home
+#
+############################################
+
+# no need to export
+@pyclass mshr CSGGeometry
+
+# 2D primitives
+@pyclass mshr Rectangle CSGGeometry
+@pyclass mshr Circle CSGGeometry
+@pyclass mshr Polygon CSGGeometry
+@pyclass mshr Ellipse CSGGeometry
+
+# 3D primitives
+@pyclass mshr Cylinder CSGGeometry
+@pyclass mshr Box CSGGeometry
+@pyclass mshr Surface3D CSGGeometry
+@pyclass mshr Cone CSGGeometry
+@pyclass mshr Ellipsoid CSGGeometry
+@pyclass mshr Sphere CSGGeometry
+@pyclass mshr Tetrahedron CSGGeometry
+
+@pyfunc mshr generate_mesh
+
++(geo1::CSGGeometry, geo2::CSGGeometry) = CSGGeometry(geo1.pyobject + geo2.pyobject)
+-(geo1::CSGGeometry, geo2::CSGGeometry) = CSGGeometry(geo1.pyobject - geo2.pyobject) 
+
+export Rectangle, Circle, Polygon, Ellipse,
+       Cylinder, Box, Surface3D, Cone, Ellipsoid, Sphere, Tetrahedron, 
+       generate_mesh
+
+############################################
+#
+#    dolfin.cpp.io module
+#
+# https://fenicsproject.org/docs/dolfin/2018.1.0/python/_autogenerated/dolfin.cpp.io.html
+#
+############################################
+
+@pyclass fenics File
+@pyclass fenics XDMFFile
+
 <<(file::File, u::Mesh) =  file.pyobject << u.pyobject
 <<(file::File, u::FeFunction) =  file.pyobject << u.pyobject
 <<(file::File, u::Tuple{FeFunction,Real}) =  file.pyobject <<  (u[1].pyobject, u[2])
 
-+(geo1::CSGGeometry, geo2::CSGGeometry) = CSGGeometry(geo1.pyobject + geo2.pyobject)
--(geo1::CSGGeometry, geo2::CSGGeometry) = CSGGeometry(geo1.pyobject - geo2.pyobject) 
+export File, XDMFFile
+
+############################################
+#
+#    dolfin.cpp.adaptivity
+#
+# https://fenicsproject.org/docs/dolfin/2018.1.0/python/_autogenerated/dolfin.cpp.adaptivity.html?highlight=timeseries#dolfin.cpp.adaptivity.TimeSeries
+#
+############################################
+
+@pyclass fenics TimeSeries
+export TimeSeries
+
+############################################
+#
+#    Other
+#
+############################################
 
 #array(matrix::FeMatrix) = matrix.pyobject.gather_on_zero()
 array(form::Expression) =  array(assemble(form)).gather_on_zero()
@@ -346,17 +411,9 @@ function array(solution::FeFunction)
     instantiated_vector = fenics.Vector(generic_vector)
     instantiated_vector.gather_on_zero()
 end
-export array
 
 len(U::OpType) = length(U.pyobject)
-export len
 
-@pyfunc fenics as_vector
-export as_vector
-
-
-
-
-
+export array, len
 
 

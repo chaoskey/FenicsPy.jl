@@ -2,6 +2,8 @@ module FenicsPy
 
 using PyCall
 
+# must be explicitly imported to be extended
+import Base: getproperty, split, inv, transpose, div, diff, abs, sign, sqrt, exp,  cos, sin, tan, acos, asin, atan,  cosh, sinh, tanh, *, +, -, /, ^, ==, <<
 
 ##################################
 #    Base : FeObject
@@ -125,6 +127,9 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
 
         ###############################
         #    Constructors ( copy )
+        #
+        # examples :
+        #     dx = Measure(fenics.dx)
         ###############################
         $(alias)(pyobject::PyObject) = $impl(pyobject)
 
@@ -162,6 +167,10 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
 
         ###############################
         # https://docs.julialang.org/en/v1/manual/methods/#Function-like-objects
+        #
+        # examples :
+        #    dx = Measure("dx", domain=mesh, subdomain_data=markers)
+        #    dx(1)
         ###############################
         function (o::$impl)(args...; kwargs...)
             _args, _kwargs = args_conv(args...; kwargs...)

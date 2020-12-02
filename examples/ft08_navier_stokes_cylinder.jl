@@ -104,6 +104,9 @@ timeseries_p = TimeSeries("navier_stokes_cylinder/pressure_series")
 File("navier_stokes_cylinder/cylinder.xml.gz") << mesh
 
 t = 0
+
+try
+
 for i in 1:num_steps
 
     # Update current time
@@ -138,6 +141,10 @@ for i in 1:num_steps
     p_n.assign(p_)
     
     println("第", i, "步:  max u = ", max(array(u_)...))
+end
+
+catch ex
+    println(ex)
 end
 
 
