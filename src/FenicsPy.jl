@@ -175,7 +175,7 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
         ###############################
         function (o::$impl)(args...; kwargs...)
             _args, _kwargs = args_conv(args...; kwargs...)
-            to_fetype(o.pyobject(args...; kwargs...))
+            to_fetype(o.pyobject(_args...; _kwargs...))
 	end
         
     end)
