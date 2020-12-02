@@ -2,6 +2,8 @@
 
 FenicsPy.jl是FEniCS的Julia封装，有限元法求解PDE。 
 
+缘由：FEniCS.jl不好用， 于是重新写了FEniCS的Julia封装：FenicsPy.jl。
+
 目标：完全和Python版本的FEniCS使用方法一样。
 
 ## 安装
