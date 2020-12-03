@@ -15,8 +15,8 @@ catch ee
     @warn("""
                     Python Dependancies not installed
                     Please either:
-                      - Rebuild PyCall using the path to FEniCS using
-                      - `ENV["PYTHON"]="/path/to/FEniCS"; Pkg.build("PyCall"); Pkg.build("FEniCS")`
+                      - Rebuild PyCall using the path to FenicsPy using
+                      - `ENV["PYTHON"]="... path of the python executable ..."; Pkg.build("PyCall"); Pkg.build("FenicsPy")`
           """)
 end
 

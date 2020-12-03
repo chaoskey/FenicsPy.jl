@@ -30,6 +30,8 @@ pkg > add https://github.com/chaoskey/FenicsPy.jl
 pkg > test FenicsPy
 ```
 
+更详细的安装说明，不妨参考： [科学计算环境搭建（Win10+WSL2+Ubuntu）](https://chaoskey.gitee.io/notes/docs/julia/0095/)
+
 ## 文档
 
 由于使用方法完全和Python版本的FEniCS一样，所以完全可以参考FEniCS官方文档。
