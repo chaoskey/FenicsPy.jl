@@ -62,21 +62,20 @@ J_S = Constant(-1.0)
 # Define magnetic permeability
 @pydef mutable struct Permeability <: fenics.UserExpression
     function __init__(self, markers, args...; kwargs...)
+                self.markers = markers
 	fenics.UserExpression.__init__(self, args...; kwargs...)
-	self.markers = markers
     end
     function eval_cell(self, values, x, cell)
-        arr = self.markers.array()
-        if arr[cell.index+1] == 0
+        if self.markers[cell.index+1] == 0
             values[1] = 4*pi*1e-7 # vacuum
-        elseif arr[cell.index+1] == 1
+        elseif self.markers[cell.index+1] == 1
             values[1] = 1e-5      # iron (should really be 6.3e-3)
         else
             values[1] = 1.26e-6   # copper
         end
     end
     function values_shape(self)
-        return (1,)
+        return ()
     end
 end
 

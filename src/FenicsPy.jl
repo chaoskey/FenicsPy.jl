@@ -3,7 +3,7 @@ module FenicsPy
 using PyCall
 
 # must be explicitly imported to be extended
-import Base: getproperty, split, inv, transpose, div, diff, abs, sign, sqrt, exp,  cos, sin, tan, acos, asin, atan,  cosh, sinh, tanh, *, +, -, /, ^, ==, <<
+import Base: getproperty, getindex, split, inv, transpose, div, diff, abs, sign, sqrt, exp,  cos, sin, tan, acos, asin, atan,  cosh, sinh, tanh, *, +, -, /, ^, ==, <<
 import PyPlot: plot
 
 ##################################
@@ -177,6 +177,17 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
             _args, _kwargs = args_conv(args...; kwargs...)
             to_fetype(o.pyobject(_args...; _kwargs...))
 	end
+
+        ###############################
+        # like-array
+        #
+        # examples :
+        #    markers = MeshFunction("size_t", mesh, 2, mesh.domains())
+        #    markers[1]
+        ###############################
+        function getindex(o::$impl, idx::Int)
+            to_fetype(o.pyobject[idx])
+        end
         
     end)
 end
