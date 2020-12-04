@@ -9,14 +9,17 @@
 @pyclass fenics Matrix FeObject FeMatrix
 @pyclass fenics Vector FeObject FeVector
 @pyclass fenics PETScVector FeVector
+@pyclass fenics PETScMatrix FeMatrix
 @pyclass fenics LUSolver
+@pyclass fenics SLEPcEigenSolver
 @pyclass fenics KrylovSolver
 
 @pyfunc fenics as_tensor
 @pyfunc fenics as_vector
 @pyfunc fenics as_matrix
 
-export FeMatrix, FeVector, LUSolver, KrylovSolver, 
+export FeMatrix, FeVector, PETScVector, PETScMatrix, 
+          LUSolver, SLEPcEigenSolver, KrylovSolver, 
           as_tensor, as_vector, as_matrix
 
 ############################################
@@ -404,7 +407,7 @@ export TimeSeries
 #
 ############################################
 
-#array(matrix::FeMatrix) = matrix.pyobject.gather_on_zero()
+array(vec::Union{FeVector, FeMatrix}) = vec.pyobject.gather_on_zero()
 array(form::Expression) =  array(assemble(form)).gather_on_zero()
 function array(solution::FeFunction)
     generic_vector = solution.pyobject.vector()
@@ -415,5 +418,11 @@ end
 len(U::OpType) = length(U.pyobject)
 
 export array, len
+
+
+@pyfunc fenics has_linear_algebra_backend
+@pyfunc fenics has_slepc
+
+export has_linear_algebra_backend, has_slepc
 
 

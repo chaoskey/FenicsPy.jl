@@ -3,7 +3,7 @@ module FenicsPy
 using PyCall
 
 # must be explicitly imported to be extended
-import Base: getproperty, getindex, split, inv, transpose, div, diff, abs, sign, sqrt, exp,  cos, sin, tan, acos, asin, atan,  cosh, sinh, tanh, *, +, -, /, ^, ==, <<
+import Base: split, inv, transpose, div, diff, abs, sign, sqrt, exp,  cos, sin, tan, acos, asin, atan,  cosh, sinh, tanh, *, +, -, /, ^, ==, <<
 import PyPlot: plot
 
 ##################################
@@ -152,7 +152,7 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
         #     p.x()    # = 1.2
         #     p.pyobject
         ###############################
-        function getproperty(_obj::$impl, _sym::Symbol)
+        function Base.getproperty(_obj::$impl, _sym::Symbol)
             if _sym === :pyobject
 	        return getfield(_obj, _sym)
             end
@@ -185,8 +185,28 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
         #    markers = MeshFunction("size_t", mesh, 2, mesh.domains())
         #    markers[1]
         ###############################
-        function getindex(o::$impl, idx::Int)
-            to_fetype(o.pyobject[idx])
+        function Base.lastindex(o::$impl)
+            o.pyobject.size()
+        end
+        
+        function Base.getindex(o::$impl, idx::Int...)
+            to_fetype(o.pyobject[idx...])
+        end
+        function Base.getindex(o::$impl, idx::UnitRange{Int})
+            idx = [i for i in idx]
+            to_fetype(o.pyobject[idx...])
+        end
+        Base.getindex(o::$impl, idx::Colon) = o[1:end]
+        
+        function Base.setindex!(o::$impl, value, idx::Int...)
+            o.pyobject[idx...] = to_pytype(value)
+        end
+        function Base.setindex!(o::$impl, value, idx::UnitRange{Int})
+            idx = [i for i in idx]
+            o.pyobject[idx...] = value
+        end
+        function Base.setindex!(o::$impl, value, idx::Colon)
+            o[1:end] = value
         end
         
     end)
@@ -225,10 +245,13 @@ function __init__()
     global hexahedron = Cell(fenics.hexahedron) #matplotlib cannot handle hexahedron elements
     global triangle = Cell(fenics.triangle)
     global quadrilateral = Cell(fenics.quadrilateral)
+
+    global DOLFIN_EPS = fenics.DOLFIN_EPS 
 						    
 end
 
 export dx, ds, dS, dP,
-       tetrahedron, hexahedron, triangle, quadrilateral
+       tetrahedron, hexahedron, triangle, quadrilateral,
+       DOLFIN_EPS
 
 end # FenicsPy
