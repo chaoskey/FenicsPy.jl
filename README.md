@@ -70,14 +70,14 @@ mshr : https://bitbucket.org/fenics-project/mshr/wiki/Home
 
 错误现象如图：
 
-![](https://chaoskey.gitee.io/notes/001.jpg)
+![](https://chaoskey.github.io/notes/001.jpg)
 
 解决方法，直接修改`plotting.py`对应的代码，如图：
 
-![](https://chaoskey.gitee.io/notes/003.jpg)
+![](https://chaoskey.github.io/notes/003.jpg)
 
 修改后执行如图：
 
-![](https://chaoskey.gitee.io/notes/002.jpg)
+![](https://chaoskey.github.io/notes/002.jpg)
 
 
