@@ -54,6 +54,30 @@ mshr : https://bitbucket.org/fenics-project/mshr/wiki/Home
 
 [FEniCS官方教程](https://fenicsproject.org/tutorial/) 
 
+----------------------------------------
 
+## FEniCS自身问题的解决
+
+`FeincsPy.jl`仅是`FEniCS`的Julia封装，所以`FeincsPy.jl`无法解决`FEniCS`自身问题。
+
+下面的问题基于的`FEniCS`的版本是：
+
+> fenics=2019.1.0=py37_9
+> mshr=2019.1.0=py37hf9f41d3_3
+
+
+- 1） Axes3D currently only supports the aspect argument 'auto'. You passed in 'equal'.
+
+错误现象如图：
+
+![](https://chaoskey.gitee.io/notes/001.jpg)
+
+解决方法，直接修改`plotting.py`对应的代码，如图：
+
+![](https://chaoskey.gitee.io/notes/003.jpg)
+
+修改后执行如图：
+
+![](https://chaoskey.gitee.io/notes/002.jpg)
 
 
