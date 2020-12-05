@@ -61,11 +61,12 @@ export Constant, Expression, FeFunction, FunctionSpace, FacetNormal,
 @pyclass fenics Mesh
 @pyclass fenics MeshFunction
 @pyclass fenics SubDomain
+@pyclass fenics CompiledSubDomain
 
 # no need to export
 @pyclass fenics MeshDomains
 
-export Mesh, MeshFunction, SubDomain
+export Mesh, MeshFunction, SubDomain, CompiledSubDomain
 
 ############################################
 #
@@ -270,6 +271,7 @@ export outer, inner, dot, cross, perp, det, cofac, tr, diag, diag_vector, dev, s
 
 # export
 diff(f::OpType,v::Variable) = VariableDerivative(fenics.diff(f.pyobject, v.pyobject))  # Base.diff
+@pyfunc fenics derivative
 @pyfunc fenics grad
 div(u::OpType) = Div(fenics.div(u.pyobject)) # Base.div
 @pyfunc fenics nabla_grad
@@ -279,13 +281,16 @@ div(u::OpType) = Div(fenics.div(u.pyobject)) # Base.div
 @pyfunc fenics curl
 @pyfunc ufl rot
 
-export grad, nabla_div, nabla_grad, Dx, Dn, curl, rot
+export diff, derivative, grad, nabla_div, nabla_grad, Dx, Dn, curl, rot
 
 ############################################
 # Nonlinear functions
 #
 # https://fenicsproject.org/docs/ufl/1.6.0/ufl.html
 ############################################
+
+@pyclass ufl Ln Expression 
+@pyclass ufl Erf Expression
 
 @pyfunc ufl max_value
 @pyfunc ufl min_value
@@ -301,14 +306,14 @@ tan(u::OpType) = Expression(fenics.tan(u.pyobject)) # Base.tan
 acos(u::OpType) = Expression(fenics.acos(u.pyobject)) # Base.acos
 asin(u::OpType) = Expression(fenics.asin(u.pyobject)) # Base.asin
 atan(u::OpType) = Expression(fenics.atan(u.pyobject)) # Base.atan
-@pyfunc ufl atan_2
+#@pyfunc ufl atan_2
 cosh(u::OpType) = Expression(fenics.cosh(u.pyobject)) # Base.cosh
 sinh(u::OpType) = Expression(fenics.sinh(u.pyobject)) # Base.sinh
 tanh(u::OpType) = Expression(fenics.tanh(u.pyobject)) # Base.tanh
-@pyfunc fenics bessel_J
-@pyfunc fenics bessel_Y
-@pyfunc fenics bessel_I
-@pyfunc fenics bessel_K
+#@pyfunc fenics bessel_J
+#@pyfunc fenics bessel_Y
+#@pyfunc fenics bessel_I
+#@pyfunc fenics bessel_K
 
 export max_value, min_value, ln, erf, atan_2, bessel_J, bessel_Y, bessel_I, bessel_K
 
@@ -431,5 +436,6 @@ export array, len
 @pyfunc fenics has_slepc
 
 export has_linear_algebra_backend, has_slepc
+
 
 
