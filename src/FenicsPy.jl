@@ -157,13 +157,20 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
 	        return getfield(_obj, _sym)
             end
             o = getproperty(_obj.pyobject, _sym)
-            if match(r"(\w+)'>", string(o.__class__))[1] == "method"
+            if isa(o, PyObject) && match(r"(\w+)'>", string(o.__class__))[1] == "method"
                 return (args::FeType...; kwargs...) ->  begin
                        _args, _kwargs = args_conv(args...; kwargs...)
 		       to_fetype(o(_args...; _kwargs...))
                 end
             end
             to_fetype(o)
+        end
+
+        function Base.setproperty!(_obj::$impl, _sym::Symbol, value)
+            if _sym === :pyobject
+                return
+            end
+            setproperty!(_obj.pyobject, _sym, to_pytype(value))
         end
 
         ###############################
