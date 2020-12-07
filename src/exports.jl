@@ -6,17 +6,17 @@
 #
 ############################################
 
-@pyclass fenics Matrix FeObject FeMatrix
-@pyclass fenics Vector FeObject FeVector
-@pyclass fenics PETScVector FeVector
-@pyclass fenics PETScMatrix FeMatrix
-@pyclass fenics LUSolver
-@pyclass fenics SLEPcEigenSolver
-@pyclass fenics KrylovSolver
+@pyclass dolfin Matrix FeObject FeMatrix
+@pyclass dolfin Vector FeObject FeVector
+@pyclass dolfin PETScVector FeVector
+@pyclass dolfin PETScMatrix FeMatrix
+@pyclass dolfin LUSolver
+@pyclass dolfin SLEPcEigenSolver
+@pyclass dolfin KrylovSolver
 
-@pyfunc fenics as_tensor
-@pyfunc fenics as_vector
-@pyfunc fenics as_matrix
+@pyfunc dolfin as_tensor
+@pyfunc dolfin as_vector
+@pyfunc dolfin as_matrix
 
 export FeMatrix, FeVector, PETScVector, PETScMatrix, 
           LUSolver, SLEPcEigenSolver, KrylovSolver, 
@@ -32,17 +32,17 @@ export FeMatrix, FeVector, PETScVector, PETScMatrix,
 #
 ############################################
 
-@pyclass fenics Expression
-@pyclass fenics Constant Expression
+@pyclass dolfin Expression
+@pyclass dolfin Constant Expression
 @pyclass ufl FacetNormal Expression
-@pyclass fenics Function FeObject FeFunction
-@pyclass fenics FunctionSpace
+@pyclass dolfin Function FeObject FeFunction
+@pyclass dolfin FunctionSpace
 
-@pyfunc fenics interpolate
-@pyfunc fenics VectorFunctionSpace
-@pyfunc fenics TrialFunction
-@pyfunc fenics TestFunction
-@pyfunc fenics TestFunctions
+@pyfunc dolfin interpolate
+@pyfunc dolfin VectorFunctionSpace
+@pyfunc dolfin TrialFunction
+@pyfunc dolfin TestFunction
+@pyfunc dolfin TestFunctions
 
 export Constant, Expression, FeFunction, FunctionSpace, FacetNormal, 
        interpolate, VectorFunctionSpace, TrialFunction, TestFunction, TestFunctions
@@ -58,13 +58,13 @@ export Constant, Expression, FeFunction, FunctionSpace, FacetNormal,
 ############################################
 
 # export
-@pyclass fenics Mesh
-@pyclass fenics MeshFunction
-@pyclass fenics SubDomain
-@pyclass fenics CompiledSubDomain
+@pyclass dolfin Mesh
+@pyclass dolfin MeshFunction
+@pyclass dolfin SubDomain
+@pyclass dolfin CompiledSubDomain
 
 # no need to export
-@pyclass fenics MeshDomains
+@pyclass dolfin MeshDomains
 
 export Mesh, MeshFunction, SubDomain, CompiledSubDomain
 
@@ -76,15 +76,15 @@ export Mesh, MeshFunction, SubDomain, CompiledSubDomain
 #
 ############################################
 
-@pyclass fenics BoxMesh
-@pyclass fenics IntervalMesh
-@pyclass fenics RectangleMesh
-@pyclass fenics SphericalShellMesh
-@pyclass fenics UnitCubeMesh
-@pyclass fenics UnitDiscMesh
-@pyclass fenics UnitIntervalMesh
-@pyclass fenics UnitSquareMesh
-@pyclass fenics UnitTriangleMesh
+@pyclass dolfin BoxMesh
+@pyclass dolfin IntervalMesh
+@pyclass dolfin RectangleMesh
+@pyclass dolfin SphericalShellMesh
+@pyclass dolfin UnitCubeMesh
+@pyclass dolfin UnitDiscMesh
+@pyclass dolfin UnitIntervalMesh
+@pyclass dolfin UnitSquareMesh
+@pyclass dolfin UnitTriangleMesh
 
 export BoxMesh, IntervalMesh, RectangleMesh, SphericalShellMesh, UnitCubeMesh, UnitDiscMesh, UnitIntervalMesh, UnitSquareMesh, UnitTriangleMesh
 
@@ -98,20 +98,20 @@ export BoxMesh, IntervalMesh, RectangleMesh, SphericalShellMesh, UnitCubeMesh, U
 #
 ############################################
 
-@pyclass fenics LinearVariationalProblem
-@pyclass fenics LinearVariationalSolver
-@pyclass fenics NonlinearVariationalProblem
-@pyclass fenics NonlinearVariationalSolver
-@pyclass fenics DirichletBC
+@pyclass dolfin LinearVariationalProblem
+@pyclass dolfin LinearVariationalSolver
+@pyclass dolfin NonlinearVariationalProblem
+@pyclass dolfin NonlinearVariationalSolver
+@pyclass dolfin DirichletBC
 
-@pyfunc fenics assemble
-@pyfunc fenics errornorm
-@pyfunc fenics project
-@pyfunc fenics solve
+@pyfunc dolfin assemble
+@pyfunc dolfin errornorm
+@pyfunc dolfin project
+@pyfunc dolfin solve
 
 # Base: split
 function split(fun::FeFunction)
-     vec = fenics.split(fun.pyobject)
+     vec = dolfin.split(fun.pyobject)
      expr_vec = [FeFunction(spl) for spl in vec]
      return expr_vec
 end
@@ -127,7 +127,7 @@ export LinearVariationalProblem, LinearVariationalSolver, NonlinearVariationalPr
 #
 ############################################
 
-@pyclass fenics Point
+@pyclass dolfin Point
 export Point
 
 ############################################
@@ -138,7 +138,7 @@ export Point
 #
 ############################################
 
-@pyfunc fenics plot
+@pyfunc dolfin plot
 export plot
 
 ############################################
@@ -160,8 +160,8 @@ export plot
 #
 ############################################
 
-@pyclass fenics FiniteElement
-@pyclass fenics MixedElement
+@pyclass dolfin FiniteElement
+@pyclass dolfin MixedElement
 
 export FiniteElement, MixedElement
 
@@ -175,17 +175,17 @@ export FiniteElement, MixedElement
 
 # no need to export
 @pyclass ufl Argument Expression
-@pyclass fenics Form Expression
+@pyclass dolfin Form Expression
 
 # no need to export
 # not exported in `feincs` and `ufl` 
-@pyclass fenics Equation Expression
+@pyclass dolfin Equation Expression
 
 # export 
-@pyclass fenics Measure
-@pyclass fenics Identity Expression
-@pyfunc fenics lhs
-@pyfunc fenics rhs
+@pyclass dolfin Measure
+@pyclass dolfin Identity Expression
+@pyfunc dolfin lhs
+@pyfunc dolfin rhs
 
 export Measure, Identity, lhs, rhs
 
@@ -198,13 +198,13 @@ export Measure, Identity, lhs, rhs
 ############################################
 
 # no need to export
-@pyclass fenics ListTensor Expression
-@pyclass fenics ComponentTensor Expression
-@pyclass fenics Indexed Expression
-@pyclass fenics Variable Expression
+@pyclass dolfin ListTensor Expression
+@pyclass dolfin ComponentTensor Expression
+@pyclass dolfin Indexed Expression
+@pyclass dolfin Variable Expression
 
 # export
-@pyfunc fenics variable
+@pyfunc dolfin variable
 
 export variable
 
@@ -235,21 +235,21 @@ OpType = Union{Expression, FeFunction}
 @pyclass ufl Sym Expression
 
 # export
-@pyfunc fenics outer
-@pyfunc fenics inner
-@pyfunc fenics dot
-@pyfunc fenics cross
+@pyfunc dolfin outer
+@pyfunc dolfin inner
+@pyfunc dolfin dot
+@pyfunc dolfin cross
 @pyfunc ufl perp
-@pyfunc fenics det
-inv(u::OpType) = Inverse(fenics.inv(u.pyobject)) # Base.inv
+@pyfunc dolfin det
+inv(u::OpType) = Inverse(dolfin.inv(u.pyobject)) # Base.inv
 @pyfunc ufl cofac
 transpose(u::OpType) = Transposed(ufl.transpose(u.pyobject)) # Base.transpose
-@pyfunc fenics tr
+@pyfunc dolfin tr
 @pyfunc ufl diag
 @pyfunc ufl diag_vector
-@pyfunc fenics dev
-@pyfunc fenics skew
-@pyfunc fenics sym
+@pyfunc dolfin dev
+@pyfunc dolfin skew
+@pyfunc dolfin sym
 
 export outer, inner, dot, cross, perp, det, cofac, tr, diag, diag_vector, dev, skew, sym
 
@@ -270,15 +270,15 @@ export outer, inner, dot, cross, perp, det, cofac, tr, diag, diag_vector, dev, s
 @pyclass ufl Curl Expression
 
 # export
-diff(f::OpType,v::Variable) = VariableDerivative(fenics.diff(f.pyobject, v.pyobject))  # Base.diff
-@pyfunc fenics derivative
-@pyfunc fenics grad
-div(u::OpType) = Div(fenics.div(u.pyobject)) # Base.div
-@pyfunc fenics nabla_grad
+diff(f::OpType,v::Variable) = VariableDerivative(dolfin.diff(f.pyobject, v.pyobject))  # Base.diff
+@pyfunc dolfin derivative
+@pyfunc dolfin grad
+div(u::OpType) = Div(dolfin.div(u.pyobject)) # Base.div
+@pyfunc dolfin nabla_grad
 @pyfunc ufl nabla_div
-@pyfunc fenics Dx
+@pyfunc dolfin Dx
 @pyfunc ufl Dn
-@pyfunc fenics curl
+@pyfunc dolfin curl
 @pyfunc ufl rot
 
 export diff, derivative, grad, nabla_div, nabla_grad, Dx, Dn, curl, rot
@@ -294,26 +294,26 @@ export diff, derivative, grad, nabla_div, nabla_grad, Dx, Dn, curl, rot
 
 @pyfunc ufl max_value
 @pyfunc ufl min_value
-abs(u::OpType) = Expression(fenics.abs(u.pyobject)) # Base.abs
-sign(u::OpType) = Expression(fenics.sign(u.pyobject)) # Base.sign
-sqrt(u::OpType) = Expression(fenics.sqrt(u.pyobject)) # Base.sqrt
-exp(u::OpType) = Expression(fenics.exp(u.pyobject)) # Base.exp
-@pyfunc fenics ln
-@pyfunc fenics erf
-cos(u::OpType) = Expression(fenics.cos(u.pyobject)) # Base.cos
-sin(u::OpType) = Expression(fenics.sin(u.pyobject)) # Base.sin
-tan(u::OpType) = Expression(fenics.tan(u.pyobject)) # Base.tan
-acos(u::OpType) = Expression(fenics.acos(u.pyobject)) # Base.acos
-asin(u::OpType) = Expression(fenics.asin(u.pyobject)) # Base.asin
-atan(u::OpType) = Expression(fenics.atan(u.pyobject)) # Base.atan
+abs(u::OpType) = Expression(dolfin.abs(u.pyobject)) # Base.abs
+sign(u::OpType) = Expression(dolfin.sign(u.pyobject)) # Base.sign
+sqrt(u::OpType) = Expression(dolfin.sqrt(u.pyobject)) # Base.sqrt
+exp(u::OpType) = Expression(dolfin.exp(u.pyobject)) # Base.exp
+@pyfunc dolfin ln
+@pyfunc dolfin erf
+cos(u::OpType) = Expression(dolfin.cos(u.pyobject)) # Base.cos
+sin(u::OpType) = Expression(dolfin.sin(u.pyobject)) # Base.sin
+tan(u::OpType) = Expression(dolfin.tan(u.pyobject)) # Base.tan
+acos(u::OpType) = Expression(dolfin.acos(u.pyobject)) # Base.acos
+asin(u::OpType) = Expression(dolfin.asin(u.pyobject)) # Base.asin
+atan(u::OpType) = Expression(dolfin.atan(u.pyobject)) # Base.atan
 #@pyfunc ufl atan_2
-cosh(u::OpType) = Expression(fenics.cosh(u.pyobject)) # Base.cosh
-sinh(u::OpType) = Expression(fenics.sinh(u.pyobject)) # Base.sinh
-tanh(u::OpType) = Expression(fenics.tanh(u.pyobject)) # Base.tanh
-#@pyfunc fenics bessel_J
-#@pyfunc fenics bessel_Y
-#@pyfunc fenics bessel_I
-#@pyfunc fenics bessel_K
+cosh(u::OpType) = Expression(dolfin.cosh(u.pyobject)) # Base.cosh
+sinh(u::OpType) = Expression(dolfin.sinh(u.pyobject)) # Base.sinh
+tanh(u::OpType) = Expression(dolfin.tanh(u.pyobject)) # Base.tanh
+#@pyfunc dolfin bessel_J
+#@pyfunc dolfin bessel_Y
+#@pyfunc dolfin bessel_I
+#@pyfunc dolfin bessel_K
 
 export max_value, min_value, ln, erf, atan_2, bessel_J, bessel_Y, bessel_I, bessel_K
 
@@ -340,7 +340,7 @@ export max_value, min_value, ln, erf, atan_2, bessel_J, bessel_Y, bessel_I, bess
 
 /(expr1::OpType, expr2::Real) = Expression(expr1.pyobject.__div__(expr2) )
 /(expr1::OpType, expr2::OpType) = Expression(expr1.pyobject.__div__(expr2.pyobject) )
-/(expr1::Real,expr2::OpType) = (expr1 * expr2) / (expr2 * expr2)
+/(expr1::Real,expr2::OpType) = Constant(expr1) / expr2
 
 ^(expr1::OpType, expr2::Real) = Expression(expr1.pyobject.__pow__(expr2) )
 ^(expr1::OpType, expr2::OpType) = Expression(expr1.pyobject.__pow__(expr2.pyobject) )
@@ -354,7 +354,7 @@ export max_value, min_value, ln, erf, atan_2, bessel_J, bessel_Y, bessel_I, bess
 #
 #    mshr
 #
-# https://bitbucket.org/fenics-project/mshr/wiki/Home
+# https://bitbucket.org/dolfin-project/mshr/wiki/Home
 #
 ############################################
 
@@ -393,8 +393,8 @@ export Rectangle, Circle, Polygon, Ellipse,
 #
 ############################################
 
-@pyclass fenics File
-@pyclass fenics XDMFFile
+@pyclass dolfin File
+@pyclass dolfin XDMFFile
 
 <<(file::File, u::Mesh) =  file.pyobject << u.pyobject
 <<(file::File, u::FeFunction) =  file.pyobject << u.pyobject
@@ -410,7 +410,7 @@ export File, XDMFFile
 #
 ############################################
 
-@pyclass fenics TimeSeries
+@pyclass dolfin TimeSeries
 export TimeSeries
 
 ############################################
@@ -423,7 +423,7 @@ array(vec::Union{FeVector, FeMatrix}) = vec.pyobject.gather_on_zero()
 array(form::Expression) =  array(assemble(form)).gather_on_zero()
 function array(solution::FeFunction)
     generic_vector = solution.pyobject.vector()
-    instantiated_vector = fenics.Vector(generic_vector)
+    instantiated_vector = dolfin.Vector(generic_vector)
     instantiated_vector.gather_on_zero()
 end
 
@@ -431,11 +431,14 @@ len(U::OpType) = length(U.pyobject)
 
 export array, len
 
+@pyclass dolfin GlobalParameters
 
-@pyfunc fenics has_linear_algebra_backend
-@pyfunc fenics has_slepc
+@pyfunc dolfin list_linear_algebra_backends
+@pyfunc dolfin has_linear_algebra_backend
+@pyfunc dolfin has_slepc
+@pyfunc dolfin info
 
-export has_linear_algebra_backend, has_slepc
+export list_linear_algebra_backends, has_linear_algebra_backend, has_slepc, info
 
 
 

@@ -86,7 +86,7 @@ end
 #    @pyfunc
 #
 # examples :
-#   1  @pyfunc fenics TestFunction
+#   1  @pyfunc dolfin TestFunction
 #   2  @pyfunc mshr generate_mesh  you_alias
 ##################################
 macro pyfunc(_module::Symbol, name::Symbol, alias::Symbol=:nothing)
@@ -107,9 +107,9 @@ export pyfunc
 #    @pyclass
 #
 # examples :
-#    1  @pyclass fenics Point
+#    1  @pyclass dolfin Point
 #    2  @pyclass mshr Rectangle CSGGeometry
-#    3  @pyclass fenics Function FeObject FeFunction
+#    3  @pyclass dolfin Function FeObject FeFunction
 ##################################
 const class_dict = Dict()
 macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Symbol=:Nothing)
@@ -130,7 +130,7 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
         #    Constructors ( copy )
         #
         # examples :
-        #     dx = Measure(fenics.dx)
+        #     dx = Measure(dolfin.dx)
         ###############################
         $(alias)(pyobject::PyObject) = $impl(pyobject)
 
@@ -189,6 +189,9 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
             o.pyobject.size()
         end
         
+        function Base.getindex(o::$impl, key::Union{String, Symbol})
+            to_fetype(o.pyobject[key])
+        end
         function Base.getindex(o::$impl, idx::Int...)
             to_fetype(o.pyobject[idx...])
         end
@@ -198,6 +201,9 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
         end
         Base.getindex(o::$impl, idx::Colon) = o[1:end]
         
+        function Base.setindex!(o::$impl, value, key::Union{String, Symbol})
+            o.pyobject[key] = to_pytype(value)
+        end
         function Base.setindex!(o::$impl, value, idx::Int...)
             o.pyobject[idx...] = to_pytype(value)
         end
@@ -215,7 +221,7 @@ end
 export pyclass
 
 ##################################
-#    python module : fenics,  mshr, ufl
+#    python module : dolfin,  mshr, ufl
 ##################################
 
 include("exports.jl")
@@ -224,34 +230,38 @@ include("exports.jl")
 #    init
 ##################################
 
-const fenics = PyCall.PyNULL()
+const dolfin = PyCall.PyNULL()
 const ufl = PyCall.PyNULL()
 const mshr = PyCall.PyNULL()
 
-export fenics, ufl, mshr
+export dolfin, ufl, mshr
 
 function __init__()
 
-    copy!(fenics, pyimport_conda("fenics", "fenics", "conda-forge"))
+    copy!(dolfin, pyimport_conda("dolfin", "fenics-dolfin", "conda-forge"))
     copy!(mshr, pyimport_conda("mshr", "mshr", "conda-forge"))
-    copy!(ufl, pyimport_conda("ufl", "ufl", "conda-forge"))
+    copy!(ufl, pyimport_conda("ufl", "fenics-ufl", "conda-forge"))
     
-    global dx = Measure(fenics.dx)
-    global ds = Measure(fenics.ds)
-    global dS = Measure(fenics.dS)
-    global dP = Measure(fenics.dP)
+    global dx = Measure(dolfin.dx)
+    global ds = Measure(dolfin.ds)
+    global dS = Measure(dolfin.dS)
+    global dP = Measure(dolfin.dP)
     
-    global tetrahedron = Cell(fenics.tetrahedron)
-    global hexahedron = Cell(fenics.hexahedron) #matplotlib cannot handle hexahedron elements
-    global triangle = Cell(fenics.triangle)
-    global quadrilateral = Cell(fenics.quadrilateral)
+    global tetrahedron = Cell(dolfin.tetrahedron)
+    global hexahedron = Cell(dolfin.hexahedron) #matplotlib cannot handle hexahedron elements
+    global triangle = Cell(dolfin.triangle)
+    global quadrilateral = Cell(dolfin.quadrilateral)
 
-    global DOLFIN_EPS = fenics.DOLFIN_EPS 
+    # parameters["linear_algebra_backend"] = backendname  # list_linear_algebra_backends()
+    global parameters = GlobalParameters(dolfin.parameters)
+
+    global DOLFIN_EPS = dolfin.DOLFIN_EPS 
 						    
 end
 
 export dx, ds, dS, dP,
        tetrahedron, hexahedron, triangle, quadrilateral,
+       parameters,
        DOLFIN_EPS
 
 end # FenicsPy

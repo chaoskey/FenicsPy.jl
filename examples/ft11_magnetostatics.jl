@@ -60,10 +60,10 @@ J_N = Constant(1.0)
 J_S = Constant(-1.0)
 
 # Define magnetic permeability
-@pydef mutable struct Permeability <: fenics.UserExpression
+@pydef mutable struct Permeability <: dolfin.UserExpression
     function __init__(self, markers, args...; kwargs...)
                 self.markers = markers
-	fenics.UserExpression.__init__(self, args...; kwargs...)
+	dolfin.UserExpression.__init__(self, args...; kwargs...)
     end
     function eval_cell(self, values, x, cell)
         if self.markers[cell.index+1] == 0
@@ -74,7 +74,7 @@ J_S = Constant(-1.0)
             values[1] = 1.26e-6   # copper
         end
     end
-    function values_shape(self)
+    function value_shape(self)
         return ()
     end
 end
