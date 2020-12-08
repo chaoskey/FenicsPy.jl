@@ -60,26 +60,26 @@ J_N = Constant(1.0)
 J_S = Constant(-1.0)
 
 # Define magnetic permeability
-@pydef mutable struct Permeability <: dolfin.UserExpression
-    function __init__(self, markers, args...; kwargs...)
-                self.markers = markers
-	dolfin.UserExpression.__init__(self, args...; kwargs...)
-    end
-    function eval_cell(self, values, x, cell)
-        if self.markers[cell.index+1] == 0
-            values[1] = 4*pi*1e-7 # vacuum
-        elseif self.markers[cell.index+1] == 1
-            values[1] = 1e-5      # iron (should really be 6.3e-3)
-        else
-            values[1] = 1.26e-6   # copper
-        end
-    end
-    function value_shape(self)
+py"""
+from math import pi
+from dolfin import UserExpression
+class Permeability(UserExpression):
+    def __init__(self, markers, **kwargs):
+        self.markers = markers
+        super().__init__(**kwargs)
+    def eval_cell(self, values, x, cell):
+        if self.markers[cell.index] == 0:
+            values[0] = 4*pi*1e-7 # vacuum
+        elif self.markers[cell.index] == 1:
+            values[0] = 1e-5      # iron (should really be 6.3e-3)
+        else:
+            values[0] = 1.26e-6   # copper
+    def value_shape(self):
         return ()
-    end
-end
+"""
 
-μ = Expression(Permeability(markers, degree=1))
+μ = Expression(py"Permeability"(markers.pyobject, degree=1))
+
 
 # Define variational problem
 A_z = TrialFunction(V)
