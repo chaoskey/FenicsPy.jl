@@ -10,6 +10,8 @@
 @pyclass dolfin Vector FeObject FeVector
 @pyclass dolfin PETScVector FeVector
 @pyclass dolfin PETScMatrix FeMatrix
+@pyclass dolfin EigenVector FeVector
+@pyclass dolfin EigenMatrix FeMatrix
 @pyclass dolfin LUSolver
 @pyclass dolfin SLEPcEigenSolver
 @pyclass dolfin KrylovSolver
@@ -18,7 +20,7 @@
 @pyfunc dolfin as_vector
 @pyfunc dolfin as_matrix
 
-export FeMatrix, FeVector, PETScVector, PETScMatrix, 
+export FeMatrix, FeVector, PETScVector, PETScMatrix, EigenVector, EigenVector,
           LUSolver, SLEPcEigenSolver, KrylovSolver, 
           as_tensor, as_vector, as_matrix
 
@@ -431,6 +433,7 @@ len(U::OpType) = length(U.pyobject)
 
 export array, len
 
+@pyclass dolfin Parameters
 @pyclass dolfin GlobalParameters
 
 @pyfunc dolfin list_linear_algebra_backends

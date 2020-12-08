@@ -196,9 +196,7 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
             o.pyobject.size()
         end
         
-        function Base.getindex(o::$impl, key::Union{String, Symbol})
-            to_fetype(o.pyobject[key])
-        end
+        Base.getindex(o::$impl, key::Union{String, Symbol}) = to_fetype(get(o.pyobject, key))
         function Base.getindex(o::$impl, idx::Int...)
             to_fetype(o.pyobject[idx...])
         end
@@ -208,9 +206,7 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
         end
         Base.getindex(o::$impl, idx::Colon) = o[1:end]
         
-        function Base.setindex!(o::$impl, value, key::Union{String, Symbol})
-            o.pyobject[key] = to_pytype(value)
-        end
+        Base.setindex!(o::$impl, value, key::Union{String, Symbol}) = set!(o.pyobject, key, to_pytype(value))
         function Base.setindex!(o::$impl, value, idx::Int...)
             o.pyobject[idx...] = to_pytype(value)
         end
