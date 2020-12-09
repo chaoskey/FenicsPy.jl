@@ -81,3 +81,41 @@ mshr : https://bitbucket.org/fenics-project/mshr/wiki/Home
 ![](https://chaoskey.github.io/notes/002.jpg)
 
 
+## FenicsPy 和 FEniCS 的某些差异
+
+我的目标：FenicsPy.jl完全和Python版本的FEniCS使用方法一样。但实际上比如有少许差异。
+
+- 1） 在`FenicsPy.jl`的库导入，只需要`using FenicsPy`， 就同时支持包括`dolfin`、`ufl`、`mshr`、 `plot`。
+
+- 2） `FEniCS`的`Function`, 由于命名冲突的问题，在`FenicsPy.jl`中改名为`FeFunction`。
+
+- 3） 关于自定义表达式，即继承于`UserExpression`的实现：
+
+由于待实现函数`eval_cell(self, values, x, cell)`中的参数values要求`共享传参`， 但在`PyCall.jl`的实现中没有做到这点，所以通过写`julia`代码继承`UserExpression`做到参数values`共享传参很麻烦。 好在`PyCall.jl`支持调用整段`Python`代码。所以可以写出如下代码：
+
+```julia
+ Define magnetic permeability
+py"""
+from math import pi
+from dolfin import UserExpression
+class Permeability(UserExpression):
+    def __init__(self, markers, **kwargs):
+        self.markers = markers
+        super().__init__(**kwargs)
+    def eval_cell(self, values, x, cell):
+        if self.markers[cell.index] == 0:
+            values[0] = 4*pi*1e-7 # vacuum
+        elif self.markers[cell.index] == 1:
+            values[0] = 1e-5      # iron (should really be 6.3e-3)
+        else:
+            values[0] = 1.26e-6   # copper
+    def value_shape(self):
+        return ()
+"""
+
+μ = Expression(py"Permeability"(markers.pyobject, degree=1))
+```
+
+完整的代码，参考[FenicsPy.jl/examples/ft11_magnetostatics.jl](https://gitee.com/chaoskey/FenicsPy.jl/blob/master/examples/ft11_magnetostatics.jl)
+
+
