@@ -8,7 +8,6 @@
 
 module ft11
 
-using PyCall
 using FenicsPy
 
 a = 1.0   # inner radius of iron cylinder

@@ -2,6 +2,8 @@ module FenicsPy
 
 using PyCall
 
+export @pydef, @py_str
+
 # must be explicitly imported to be extended
 import Base: split, inv, transpose, div, diff, abs, sign, sqrt, exp,  cos, sin, tan, acos, asin, atan,  cosh, sinh, tanh, *, +, -, /, ^, ==, <<
 import PyPlot: plot

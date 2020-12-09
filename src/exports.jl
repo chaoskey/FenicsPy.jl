@@ -37,19 +37,40 @@ export FeMatrix, FeVector, PETScVector, PETScMatrix, EigenVector, EigenVector,
 @pyclass dolfin Expression
 @pyclass dolfin Constant Expression
 @pyclass ufl FacetNormal Expression
+@pyclass dolfin FacetArea Expression
+@pyclass ufl CellDiameter Expression
 
 @pyclass dolfin Function FeObject FeFunction
 @pyclass dolfin FunctionSpace
+@pyclass dolfin MultiMeshFunction
 
 @pyfunc dolfin interpolate
+@pyfunc dolfin MultiMeshFunctionSpace
+@pyfunc dolfin TensorFunctionSpace
 @pyfunc dolfin VectorFunctionSpace
 @pyfunc dolfin TrialFunction
 @pyfunc dolfin TrialFunctions
 @pyfunc dolfin TestFunction
 @pyfunc dolfin TestFunctions
 
-export Constant, Expression, FeFunction, FunctionSpace, FacetNormal, 
-       interpolate, VectorFunctionSpace, TrialFunction, TrialFunctions, TestFunction, TestFunctions
+@pyfunc dolfin CellNormal
+@pyfunc dolfin CellVolume
+@pyfunc dolfin Circumradius
+@pyfunc dolfin MaxCellEdgeLength
+@pyfunc dolfin MaxFacetEdgeLength
+@pyfunc dolfin MinCellEdgeLength
+@pyfunc dolfin MinFacetEdgeLength
+@pyfunc dolfin SpatialCoordinate
+
+# no need to export
+# not exported in `ufl` and `dolfin`
+@pyfunc dolfin CellSize
+
+export Constant, Expression, FeFunction, FunctionSpace, MultiMeshFunction, FacetNormal, FacetArea, CellDiameter,
+       interpolate, VectorFunctionSpace, MultiMeshFunctionSpace, TensorFunctionSpace, 
+       TrialFunction, TrialFunctions, TestFunction, TestFunctions,
+       CellNormal, CellVolume, Circumradius, MaxCellEdgeLength, MaxFacetEdgeLength,
+       MinCellEdgeLength, MinFacetEdgeLength, SpatialCoordinate
 
 ############################################
 #
@@ -66,11 +87,12 @@ export Constant, Expression, FeFunction, FunctionSpace, FacetNormal,
 @pyclass dolfin MeshFunction
 @pyclass dolfin SubDomain
 @pyclass dolfin CompiledSubDomain
+@pyclass dolfin MeshCoordinates 
 
 # no need to export
 @pyclass dolfin MeshDomains
 
-export Mesh, MeshFunction, SubDomain, CompiledSubDomain
+export Mesh, MeshFunction, SubDomain, CompiledSubDomain, MeshCoordinates
 
 ############################################
 #
@@ -252,7 +274,7 @@ export variable
 OpType = Union{Expression, FeFunction}
 
 # no need to export
-# not exported in `feincs` or `ufl`
+# not exported in `dolfin` or `ufl`
 @pyclass ufl Outer Expression
 @pyclass ufl Inner Expression
 @pyclass ufl Conj Expression
@@ -266,6 +288,11 @@ OpType = Union{Expression, FeFunction}
 @pyclass ufl Deviatoric Expression
 @pyclass ufl Skew Expression
 @pyclass ufl Sym Expression
+@pyclass ufl Product Expression
+@pyclass ufl Sum Expression
+@pyclass ufl Division Expression
+@pyclass ufl PositiveRestricted Expression
+@pyclass ufl NegativeRestricted Expression
 
 # export
 @pyfunc dolfin outer
@@ -283,8 +310,10 @@ transpose(u::OpType) = Transposed(ufl.transpose(u.pyobject)) # Base.transpose
 @pyfunc dolfin dev
 @pyfunc dolfin skew
 @pyfunc dolfin sym
+@pyfunc ufl avg
+@pyfunc ufl jump
 
-export outer, inner, dot, cross, perp, det, cofac, tr, diag, diag_vector, dev, skew, sym
+export outer, inner, dot, cross, perp, det, cofac, tr, diag, diag_vector, dev, skew, sym, avg, jump
 
 ############################################
 # Differential operators
