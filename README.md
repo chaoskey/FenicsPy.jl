@@ -83,7 +83,7 @@ mshr : https://bitbucket.org/fenics-project/mshr/wiki/Home
 
 ## FenicsPy 和 FEniCS 的某些差异
 
-我的目标：FenicsPy.jl完全和Python版本的FEniCS使用方法一样。但实际上比如有少许差异。
+我的目标：FenicsPy.jl完全和Python版本的FEniCS使用方法一样。但实际上有少许差异。
 
 - 1） 在`FenicsPy.jl`的库导入，只需要`using FenicsPy`， 就同时支持包括`dolfin`、`ufl`、`mshr`、 `plot`。
 
@@ -91,10 +91,10 @@ mshr : https://bitbucket.org/fenics-project/mshr/wiki/Home
 
 - 3） 关于自定义表达式，即继承于`UserExpression`的实现：
 
-由于待实现函数`eval_cell(self, values, x, cell)`中的参数values要求`共享传参`， 但在`PyCall.jl`的实现中没有做到这点，所以通过写`julia`代码继承`UserExpression`做到参数values`共享传参很麻烦。 好在`PyCall.jl`支持调用整段`Python`代码。所以可以写出如下代码：
+由于待实现函数`eval_cell(self, values, x, cell)`中的参数values要求`共享传参`， 但在`PyCall.jl`的实现中没有做到这点，所以通过写`julia`代码继承`UserExpression`做到values`共享传参`很麻烦。 好在`PyCall.jl`支持调用整段`Python`代码。所以可以写出如下代码：
 
 ```julia
- Define magnetic permeability
+# Define magnetic permeability
 py"""
 from math import pi
 from dolfin import UserExpression
