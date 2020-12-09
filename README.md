@@ -118,4 +118,26 @@ class Permeability(UserExpression):
 
 完整的代码，参考[FenicsPy.jl/examples/ft11_magnetostatics.jl](https://gitee.com/chaoskey/FenicsPy.jl/blob/master/examples/ft11_magnetostatics.jl)
 
+- 4) 继承Python类的第二种方法
+
+形如：
+
+```julia
+# Define Dirichlet boundary
+@pydef mutable struct DirichletBoundary <: dolfin.SubDomain
+    function inside(self, x, on_boundary)
+        return on_boundary
+    end
+end
+
+bc = SubDomain(DirichletBoundary())
+```
+
+完整的代码，参考[FenicsPy.jl/examples/demo_biharmonic.jl](https://gitee.com/chaoskey/FenicsPy.jl/blob/master/examples/demo_biharmonic.jl)
+
+
+此第二种方法只适用于：成员函数的参数不涉及`共享传参`的情况，这是因为`PyCall.jl` 不支持跨`共享传参`。 
+
+我更乐于统一采用第一种方法（即3）对应的方法）。
+
 
