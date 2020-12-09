@@ -118,7 +118,7 @@ class Permeability(UserExpression):
 
 完整的代码，参考[FenicsPy.jl/examples/ft11_magnetostatics.jl](https://gitee.com/chaoskey/FenicsPy.jl/blob/master/examples/ft11_magnetostatics.jl)
 
-- 4) 继承Python类的第二种方法
+- 4 ) 继承Python类的第二种方法
 
 形如：
 
