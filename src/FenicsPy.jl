@@ -56,12 +56,8 @@ PyType = Union{Real, String, Array, Tuple, Dict, PyObject, Nothing}
 
 function to_feobject(obj::PyObject)
     clsname = match(r"(\w+)'>", string(obj.__class__))[1]
-    if haskey(class_dict,clsname)
-        clsname = class_dict[clsname]
-        getproperty(FenicsPy, clsname)(obj)
-    else
-        obj
-    end
+    clsname = get(class_dict, clsname, :FeAny)
+    getproperty(FenicsPy, clsname)(obj)
 end
 
 to_fearray(arr::Array) = [isa(a, PyObject) ? to_feobject(a) : a for a in arr]
@@ -212,6 +208,27 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
         end
         function Base.setindex!(o::$impl, value, idx::Colon)
             o[1:end] = value
+        end
+
+        ###############################
+        # examples :
+        #     CellType.Type.quadrilateral
+        #     UnitSquareMesh.create
+        ###############################
+        function Base.getproperty(_obj::Type{$alias}, _sym::Symbol)
+            if hasproperty(_obj, _sym)
+                return getfield(_obj, _sym)
+            end
+            name = hasproperty($_module, $name) ? $name : $_base
+            pyclass = getproperty($_module, name)
+            o = getproperty(pyclass, _sym)
+            if isa(o, PyObject) && match(r"(\w+)'>", string(o.__class__))[1] == "method"
+                return (args::FeType...; kwargs...) ->  begin
+                       _args, _kwargs = args_conv(args...; kwargs...)
+                       to_fetype(o(_args...; _kwargs...))
+                end
+            end
+            to_fetype(o)
         end
         
     end)

@@ -1,3 +1,5 @@
+@pyclass dolfin FeAny
+
 ############################################
 #
 #    dolfin.cpp.la
@@ -63,9 +65,7 @@ export FeMatrix, FeVector, PETScVector, PETScMatrix, EigenVector, EigenVector,
 @pyfunc dolfin MinFacetEdgeLength
 @pyfunc dolfin SpatialCoordinate
 
-# no need to export
-# not exported in `ufl` and `dolfin`
-@pyfunc dolfin CellSize
+OpType = Union{Expression, FeFunction}
 
 export Constant, Expression, FeFunction, FunctionSpace, MultiMeshFunction, FacetNormal, FacetArea, CellDiameter,
        MeshCoordinates, interpolate, VectorFunctionSpace, MultiMeshFunctionSpace, TensorFunctionSpace, 
@@ -129,11 +129,6 @@ export Constant, Expression, FeFunction, FunctionSpace, MultiMeshFunction, Facet
 @pyclass dolfin MultiMesh
 @pyclass dolfin CompiledSubDomain
 
-# no need to export
-# # not exported in `ufl` and `dolfin`
-@pyclass dolfin MeshDomains
-
-
 export MeshValueCollection, MeshFunction, UnitTriangleMesh, SphericalShellMesh, UnitDiscMesh,
        MeshColoring, MeshEditor, MeshGeometry, MeshPartitioning, MeshQuality, MeshTransformation,
        CellType, PeriodicBoundaryComputation, SubsetIterator, SubDomain, DomainBoundary, Mesh,
@@ -164,9 +159,9 @@ export MeshValueCollection, MeshFunction, UnitTriangleMesh, SphericalShellMesh, 
 @pyfunc dolfin solve
 
 # Base: split
-function split(fun::FeFunction)
+function split(fun::OpType)
      vec = dolfin.split(fun.pyobject)
-     expr_vec = [FeFunction(spl) for spl in vec]
+     expr_vec = [to_fetype(spl) for spl in vec]
      return expr_vec
 end
 
@@ -302,8 +297,6 @@ export variable
 # https://fenicsproject.org/docs/ufl/1.6.0/ufl.html
 # < CompoundTensorOperator < Operator < Expr 
 ############################################
-
-OpType = Union{Expression, FeFunction}
 
 # no need to export
 # not exported in `dolfin` or `ufl`
