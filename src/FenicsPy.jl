@@ -240,7 +240,15 @@ export pyclass
 #    python module : dolfin,  mshr, ufl
 ##################################
 
-include("exports.jl")
+include("common.jl")
+include("la.jl")
+include("function.jl")
+include("fem.jl")
+include("mesh.jl")
+include("geometry.jl")
+include("operator.jl")
+include("mshr.jl")
+include("io.jl")
 
 ##################################
 #    init
