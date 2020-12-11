@@ -125,16 +125,20 @@ for i in 1:num_steps
     #update values
     u_n.assign(u_)
     p_n.assign(p_)
-    
-    xdmffile_u.write(u_, t)
-    xdmffile_p.write(p_, t)
 
-    # Save nodal values to file
-    timeseries_u.store(u_.vector(), t)
-    timeseries_p.store(p_.vector(), t)
+    if (i-1)%25 == 0 || i == num_steps
+
+        xdmffile_u.write(u_, t)
+        xdmffile_p.write(p_, t)
+
+        # Save nodal values to file
+        timeseries_u.store(u_.vector(), t)
+        timeseries_p.store(p_.vector(), t)
         
-    println(i, "/", num_steps, " \t max:", max(array(u_)...))
-        
+        println(i, "/", num_steps, " \t max:", max(array(u_)...))
+
+    end
+
     # Plot solution
     #plot(u_)
     #plot(p_)

@@ -15,6 +15,8 @@
 @pyclass dolfin LUSolver
 @pyclass dolfin SLEPcEigenSolver
 @pyclass dolfin KrylovSolver
+@pyclass dolfin NewtonSolver
+@pyclass dolfin NonlinearProblem
 
 @pyfunc ufl as_tensor
 @pyfunc ufl as_vector
@@ -26,8 +28,8 @@
 @pyfunc dolfin info
 
 export FeMatrix, FeVector, PETScVector, PETScMatrix, EigenVector, EigenVector,
-       LUSolver, SLEPcEigenSolver, KrylovSolver, as_tensor, as_vector, 
-       as_matrix, list_linear_algebra_backends, has_linear_algebra_backend, 
-       has_slepc, info
+       LUSolver, SLEPcEigenSolver, NewtonSolver, NonlinearProblem, KrylovSolver, 
+       as_tensor, as_vector, as_matrix, list_linear_algebra_backends, 
+       has_linear_algebra_backend, has_slepc, info
 
 
