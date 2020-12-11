@@ -195,15 +195,23 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
         end
         
         Base.getindex(o::$impl, key::Union{String, Symbol}) = to_fetype(get(o.pyobject, key))
-        Base.getindex(o::$impl, idx::Int...) = to_fetype(o.pyobject[idx...])
-        Base.getindex(o::$impl, idx::UnitRange{Int}) = to_fetype(o.pyobject[idx...])
+        function Base.getindex(o::$impl, idx::Int...)
+            @assert length(idx) <= 1000   "Illegal operation, please try other methods. for example: array(u)[:]"
+            to_fetype(o.pyobject[idx...])
+        end
+        function Base.getindex(o::$impl, idx::UnitRange{Int}) 
+            @assert length(idx) <= 1000   "Illegal operation, please try other methods. for example: array(u)[:]"
+            to_fetype(o.pyobject[idx...])
+        end
         Base.getindex(o::$impl, idx::Colon) = o[1:end]
         
         Base.setindex!(o::$impl, value, key::Union{String, Symbol}) = set!(o.pyobject, key, to_pytype(value))
         function Base.setindex!(o::$impl, value, idx::Int...)
+            @assert length(idx) <= 1000   "Illegal operation, please try other methods. for example: u_n.assign(u)"
             o.pyobject[idx...] = to_pytype(value)
         end
         function Base.setindex!(o::$impl, value, idx::UnitRange{Int})
+            @assert length(idx) <= 1000   "Illegal operation, please try other methods. for example: u_n.assign(u)"
             o.pyobject[idx...] = to_pytype(value)
         end
         function Base.setindex!(o::$impl, value, idx::Colon)

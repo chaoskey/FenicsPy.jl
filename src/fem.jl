@@ -15,12 +15,13 @@
 @pyclass dolfin DirichletBC
 
 @pyfunc dolfin assemble
+@pyfunc dolfin assemble_system
 @pyfunc dolfin errornorm
 @pyfunc dolfin project
 @pyfunc dolfin solve
 
 export LinearVariationalProblem, LinearVariationalSolver, NonlinearVariationalProblem, NonlinearVariationalSolver, 
-       DirichletBC, assemble, errornorm, project, solve
+       DirichletBC, assemble, assemble_system, errornorm, project, solve
 
 
 ############################################
