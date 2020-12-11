@@ -56,7 +56,7 @@ J = derivative(F, u, du)
 solve(F == 0, u, bcs, J=J)
 
 # Save solution in VTK format
-file = File("displacement.pvd")
+file = File("hyperelasticity/displacement.pvd")
 file << u
 
 # Plot solution

@@ -62,7 +62,7 @@ solve(a == L, u, bc)
 #plot(u)
 
 # Dump solution to file in VTK format
-file = File("bvp1.pvd")
+file = File("bvp1/bvp1.pvd")
 file << u
 
 end # module bvp1

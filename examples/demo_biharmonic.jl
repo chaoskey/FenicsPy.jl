@@ -67,7 +67,7 @@ u = FeFunction(V)
 solve(a == L, u, bc)
 
 # Save solution to file
-file = File("biharmonic.pvd")
+file = File("biharmonic/biharmonic.pvd")
 file << u
 
 # Plot solution
