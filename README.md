@@ -140,4 +140,56 @@ bc = SubDomain(DirichletBoundary())
 
 我更乐于统一采用第一种方法（即3）对应的方法）。
 
+- 5）关于边界条件的设置的差异
+
+`FEniCS`的范例代码：
+
+```python
+# Sub domain for clamp at left end
+def left(x, on_boundary):
+    return near(x[0], 0.) and on_boundary
+
+# Sub domain for rotation at right end
+def right(x, on_boundary):
+    return near(x[0], 1.) and on_boundary
+
+bc = DirichletBC(V, zero, left)
+
+force_boundary = AutoSubDomain(right)
+```
+
+但是，我没有找到合适的方法，可以在`FenicsPy.jl`中仿照这个代码。  目前建议采用下面的代码实现相同的功能：
+
+
+```julia
+
+# Sub domain for clamp at left end
+left = "near(x[0], 0.) && on_boundary"
+
+# Sub domain for rotation at right end
+right = "near(x[0], 1.) && on_boundary"
+
+bc = DirichletBC(V, zero, left)
+
+force_boundary = AutoSubDomain(right)
+```
+完整的代码，参考：[examples/demo_elastodynamics.jl](https://gitee.com/chaoskey/FenicsPy.jl/blob/master/examples/demo_elastodynamics.jl)
+
+
+- 6）关于`FEniCS`中`Vector`的赋值
+
+在`python`中，下面两行代码的功能一样。
+
+```python
+u0.vector()[:] = u.vector()
+
+u0.assign(u)
+```
+
+但是在`julia`中，第一行代码有性能问题（执行缓慢，甚至死机）。  建议使用第二行代码。
+
+完整的代码，参考：[examples/demo_cahn-hilliard.jl](https://gitee.com/chaoskey/FenicsPy.jl/blob/master/examples/demo_cahn-hilliard.jl)
+
+
+
 
