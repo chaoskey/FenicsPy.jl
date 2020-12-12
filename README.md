@@ -85,7 +85,7 @@ mshr : https://bitbucket.org/fenics-project/mshr/wiki/Home
 
 我的目标：FenicsPy.jl完全和Python版本的FEniCS使用方法一样。但实际上有少许差异。
 
-### 1） 库导入
+### 1）库导入
 
 在`FenicsPy.jl`的库导入，只需要`using FenicsPy`， 就同时支持包括`dolfin`、`ufl`、`mshr`、 `plot`。
 
@@ -93,7 +93,7 @@ mshr : https://bitbucket.org/fenics-project/mshr/wiki/Home
 
 `FEniCS`的`Function`, 由于命名冲突的问题，在`FenicsPy.jl`中改名为`FeFunction`。
 
-### 3） 关于自定义表达式，即继承于`UserExpression`的实现：
+### 3）关于自定义表达式，即继承于`UserExpression`的实现：
 
 由于待实现函数`eval_cell(self, values, x, cell)`中的参数values要求`共享传参`， 但在`PyCall.jl`的实现中没有做到这点，所以通过写`julia`代码继承`UserExpression`做到values`共享传参`很麻烦。 好在`PyCall.jl`支持调用整段`Python`代码。所以可以写出如下代码：
 
@@ -122,7 +122,7 @@ class Permeability(UserExpression):
 
 完整的代码，参考[FenicsPy.jl/examples/ft11_magnetostatics.jl](https://gitee.com/chaoskey/FenicsPy.jl/blob/master/examples/ft11_magnetostatics.jl)
 
-### 4) 继承Python类的第二种方法
+### 4）继承Python类的第二种方法
 
 形如：
 
@@ -175,7 +175,7 @@ right = "near(x[0], 1.) && on_boundary"
 
 bc = DirichletBC(V, zero, left)
 
-force_boundary = AutoSubDomain(right)
+force_boundary = CompiledSubDomain(right)
 ```
 完整的代码，参考：[examples/demo_elastodynamics.jl](https://gitee.com/chaoskey/FenicsPy.jl/blob/master/examples/demo_elastodynamics.jl)
 
