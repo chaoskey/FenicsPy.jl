@@ -10,7 +10,6 @@
 ############################################
 
 @pyclass dolfin Expression
-@pyclass dolfin Variable Expression
 @pyclass dolfin Constant Expression
 @pyclass dolfin MeshCoordinates Expression
 @pyclass dolfin FacetArea Expression
@@ -28,9 +27,9 @@
 @pyfunc dolfin TestFunction
 @pyfunc dolfin TestFunctions
 
-OpType = Union{Expression, FeFunction}
+OpType = Union{Expression, Variable, FeFunction}
 
-export Constant, Expression, Variable, FeFunction, FunctionSpace, MultiMeshFunction, 
+export Constant, Expression, FeFunction, FunctionSpace, MultiMeshFunction, 
        FacetArea, MeshCoordinates, interpolate, VectorFunctionSpace, MultiMeshFunctionSpace, 
        TensorFunctionSpace, TrialFunction, TrialFunctions, TestFunction, TestFunctions
 
