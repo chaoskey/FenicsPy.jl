@@ -38,6 +38,11 @@
 
 *(v::Union{FeMatrix, FeVector}, c::Real) = to_fetype(v.pyobject * c)
 *(c::Real, v::Union{FeMatrix, FeVector}) = to_fetype(c * v.pyobject)
+
++(v1::FeVector, v2::FeVector) = to_fetype(v1.pyobject + v2.pyobject)
+
+-(v1::FeVector, v2::FeVector) = to_fetype(v1.pyobject - v2.pyobject)
+
 /(v::Union{FeMatrix, FeVector}, c::Real) = to_fetype(v.pyobject / c)
 
 export FeMatrix, FeVector, PETScVector, PETScMatrix, EigenVector, EigenMatrix, 

@@ -18,7 +18,8 @@
 @pyclass dolfin Parameter
 @pyclass dolfin GlobalParameters
 
-@pyfunc dolfin plot
+#@pyfunc dolfin plot
+plot(u::FeObject, args...; kwargs...) = dolfin.plot(u.pyobject, args...; kwargs...)
 
 export Parameters, plot
 

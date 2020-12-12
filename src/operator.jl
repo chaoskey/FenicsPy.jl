@@ -142,21 +142,21 @@ export max_value, min_value, ln, erf, atan_2, bessel_J, bessel_Y, bessel_I, bess
 
 *(expr1::OpType , expr2::Measure) = Expression(expr2.pyobject.__rmul__(expr1.pyobject) )
 
-*(expr1::OpType , expr2::OpType ) = Expression(expr1.pyobject.__mul__(expr2.pyobject) )
-*(expr1::Real, expr2::OpType) = Expression(expr2.pyobject.__mul__(expr1) )
-*(expr1::OpType , expr2::Real) = Expression(expr1.pyobject.__mul__(expr2) )
+*(expr1::OpType , expr2::OpType ) = Expression(expr1.pyobject * expr2.pyobject) 
+*(expr1::Real, expr2::OpType) = Expression(expr1 * expr2.pyobject) 
+*(expr1::OpType , expr2::Real) = Expression(expr2 * expr1.pyobject) 
 
-+(expr1::OpType, expr2::Real) = Expression(expr1.pyobject.__add__(expr2) )
-+(expr1::Real, expr2::OpType) = Expression(expr2.pyobject.__add__(expr1) )
-+(expr1::OpType, expr2::OpType) = Expression(expr1.pyobject.__add__(expr2.pyobject) )
++(expr1::OpType, expr2::Real) = Expression(expr1.pyobject + expr2) 
++(expr1::Real, expr2::OpType) = Expression(expr2.pyobject + expr1) 
++(expr1::OpType, expr2::OpType) = Expression(expr1.pyobject + expr2.pyobject) 
 
 -(expr::OpType) = (-1)*expr
--(expr1::OpType, expr2::Real) = Expression(expr1.pyobject.__sub__(expr2) )
--(expr1::Real, expr2::OpType) = (-1)*(Expression(expr2.pyobject.__sub__(expr1) ))
--(expr1::OpType, expr2::OpType) = Expression(expr1.pyobject.__sub__(expr2.pyobject) )
+-(expr1::OpType, expr2::Real) = Expression(expr1.pyobject - expr2) 
+-(expr1::Real, expr2::OpType) = (-1)*(Expression(expr2.pyobject - expr1) )
+-(expr1::OpType, expr2::OpType) = Expression(expr1.pyobject - expr2.pyobject) 
 
-/(expr1::OpType, expr2::Real) = Expression(expr1.pyobject.__div__(expr2) )
-/(expr1::OpType, expr2::OpType) = Expression(expr1.pyobject.__div__(expr2.pyobject) )
+/(expr1::OpType, expr2::Real) = Expression(expr1.pyobject / expr2) 
+/(expr1::OpType, expr2::OpType) = Expression(expr1.pyobject / expr2.pyobject) 
 /(expr1::Real,expr2::OpType) = Constant(expr1) / expr2
 
 ^(expr1::OpType, expr2::Real) = Expression(expr1.pyobject.__pow__(expr2) )

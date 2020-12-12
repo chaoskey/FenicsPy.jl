@@ -12,7 +12,9 @@
 @pyclass dolfin LinearVariationalSolver
 @pyclass dolfin NonlinearVariationalProblem
 @pyclass dolfin NonlinearVariationalSolver
+@pyclass dolfin LocalSolver
 @pyclass dolfin DirichletBC
+@pyclass dolfin AutoSubDomain
 
 @pyfunc dolfin assemble
 @pyfunc dolfin assemble_system
@@ -20,8 +22,9 @@
 @pyfunc dolfin project
 @pyfunc dolfin solve
 
-export LinearVariationalProblem, LinearVariationalSolver, NonlinearVariationalProblem, NonlinearVariationalSolver, 
-       DirichletBC, assemble, assemble_system, errornorm, project, solve
+export LinearVariationalProblem, LinearVariationalSolver, NonlinearVariationalProblem, 
+       NonlinearVariationalSolver, LocalSolver, DirichletBC, AutoSubDomain, assemble, 
+       assemble_system, errornorm, project, solve
 
 
 ############################################
