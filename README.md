@@ -194,6 +194,27 @@ u0.assign(u)
 
 完整的代码，参考：[examples/demo_cahn-hilliard.jl](https://gitee.com/chaoskey/FenicsPy.jl/blob/master/examples/demo_cahn-hilliard.jl)
 
+### 7）关于绘图
+
+`FenicsPy.jl`关于绘图的接口函数只有`plot(...)`。这个接口函数的第一个参数类型只支持：`Mesh`, `MeshFunction`, `FeFunction`, `Expression`, `DirichletBC`, `FiniteElement`,`MultiMesh`， 所以与`PyPlot.jl`的原本的`plot`不冲突。
+
+事实上， `plot`后台调用的就是`PyPlot.plot`。 目前也只支持`PyPlot` 
+
+如果只使用`plot`，无是绘制上面的特定`FEniCS`数据，还是绘制普通数据，都无需额外`using PyPlot`。 
+
+但是，如果希望用到`PyPlot`的其它API，那么必须额外`using PyPlot`。
+
+比如：
+
+```julia
+using PyPlot
+plot(time, u_tip)
+xlabel("Time")
+ylabel("Tip displacement")
+ylim(-0.5, 0.5)
+```
+
+完整的代码，参考[examples/demo_elastodynamics.jl](https://gitee.com/chaoskey/FenicsPy.jl/blob/master/examples/demo_elastodynamics.jl) 末尾注释掉的代码。
 
 
 
