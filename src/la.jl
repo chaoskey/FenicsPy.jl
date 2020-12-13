@@ -19,6 +19,7 @@
 @pyclass dolfin SLEPcEigenSolver
 @pyclass dolfin KrylovSolver
 @pyclass dolfin NewtonSolver
+@pyclass dolfin PETScLUSolver
 @pyclass dolfin PETScKrylovSolver
 @pyclass dolfin NonlinearProblem
 
@@ -26,13 +27,24 @@
 @pyfunc ufl as_vector
 @pyfunc ufl as_matrix
 
+@pyfunc dolfin list_lu_solver_methods
+@pyfunc dolfin list_linear_solver_methods
+@pyfunc dolfin lu_solver_methods
+@pyfunc dolfin linear_solver_methods
 @pyfunc dolfin list_linear_algebra_backends
 @pyfunc dolfin has_linear_algebra_backend
+@pyfunc dolfin list_krylov_solver_methods
+@pyfunc dolfin list_krylov_solver_preconditioners
 @pyfunc dolfin has_krylov_solver_method
 @pyfunc dolfin has_krylov_solver_preconditioner
 
 @pyfunc dolfin as_backend_type
 @pyfunc dolfin la_index_dtype
+@pyfunc dolfin normalize
+@pyfunc dolfin residual
+
+list_lu_solver_methods, list_linear_solver_methods, lu_solver_methods, linear_solver_methods,
+list_krylov_solver_methods, list_krylov_solver_preconditioners, normalize,residual
 
 *(v::Union{FeMatrix, FeVector}, c::Real) = to_fetype(v.pyobject * c)
 *(c::Real, v::Union{FeMatrix, FeVector}) = to_fetype(c * v.pyobject)
@@ -44,10 +56,11 @@
 /(v::Union{FeMatrix, FeVector}, c::Real) = to_fetype(v.pyobject / c)
 
 export FeMatrix, FeVector, PETScVector, PETScMatrix, EigenVector, EigenMatrix, 
-       VectorSpaceBasis, LUSolver, SLEPcEigenSolver, NewtonSolver, 
+       VectorSpaceBasis, LUSolver, PETScLUSolver, SLEPcEigenSolver, NewtonSolver, 
        PETScKrylovSolver, NonlinearProblem, KrylovSolver, as_tensor, as_vector, 
-       as_matrix, list_linear_algebra_backends, has_linear_algebra_backend, 
-       has_krylov_solver_method,has_krylov_solver_preconditioner,
-       as_backend_type, la_index_dtype
+       as_matrix, list_lu_solver_methods, list_linear_solver_methods, lu_solver_methods, 
+       linear_solver_methods, list_linear_algebra_backends, has_linear_algebra_backend, 
+       has_krylov_solver_method,has_krylov_solver_preconditioner, list_krylov_solver_methods, 
+       as_backend_type, la_index_dtype, list_krylov_solver_preconditioners, normalize,residual
 
 

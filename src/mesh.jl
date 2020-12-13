@@ -50,10 +50,18 @@
 @pyclass dolfin MultiMesh
 @pyclass dolfin CompiledSubDomain
 
+@pyfunc dolfin cells
+@pyfunc dolfin edges
+@pyfunc dolfin entities
+@pyfunc dolfin faces
+@pyfunc dolfin facets
+@pyfunc dolfin vertices
+
 export MeshValueCollection, MeshFunction, UnitTriangleMesh, SphericalShellMesh, UnitDiscMesh, 
            MeshColoring, MeshEditor, MeshGeometry, MeshPartitioning, MeshQuality, MeshTransformation, 
            CellType, PeriodicBoundaryComputation,  SubsetIterator, SubDomain, DomainBoundary, Mesh, 
            SubMesh, BoundaryMesh, BoxMesh, UnitCubeMesh, IntervalMesh, UnitIntervalMesh, RectangleMesh, 
-           UnitSquareMesh, MeshEntity, Cell, Edge, Face, Facet, Vertex, MeshTopology, MultiMesh, CompiledSubDomain
+           UnitSquareMesh, MeshEntity, Cell, Edge, Face, Facet, Vertex, MeshTopology, MultiMesh, 
+           CompiledSubDomain, cells, edges, entities, faces, facets, vertices
 
 
