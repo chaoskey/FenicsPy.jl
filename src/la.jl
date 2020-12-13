@@ -28,7 +28,6 @@
 
 @pyfunc dolfin list_linear_algebra_backends
 @pyfunc dolfin has_linear_algebra_backend
-@pyfunc dolfin info
 @pyfunc dolfin has_krylov_solver_method
 @pyfunc dolfin has_krylov_solver_preconditioner
 
@@ -48,7 +47,7 @@ export FeMatrix, FeVector, PETScVector, PETScMatrix, EigenVector, EigenMatrix,
        VectorSpaceBasis, LUSolver, SLEPcEigenSolver, NewtonSolver, 
        PETScKrylovSolver, NonlinearProblem, KrylovSolver, as_tensor, as_vector, 
        as_matrix, list_linear_algebra_backends, has_linear_algebra_backend, 
-       info, has_krylov_solver_method,has_krylov_solver_preconditioner,
+       has_krylov_solver_method,has_krylov_solver_preconditioner,
        as_backend_type, la_index_dtype
 
 

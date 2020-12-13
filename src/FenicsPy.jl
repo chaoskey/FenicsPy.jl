@@ -290,12 +290,11 @@ function __init__()
     global parameters = GlobalParameters(dolfin.parameters)
 
     global DOLFIN_EPS = dolfin.DOLFIN_EPS 
-						    
 end
 
 export dx, ds, dS, dP,
        tetrahedron, hexahedron, triangle, quadrilateral,
-       parameters,
+       parameters,  
        DOLFIN_EPS
 
 end # FenicsPy
