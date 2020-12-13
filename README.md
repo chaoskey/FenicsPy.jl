@@ -200,7 +200,7 @@ u0.assign(u)
 
 事实上， `plot`后台调用的就是`PyPlot.plot`。 目前也只支持`PyPlot` 
 
-如果只使用`plot`，无是绘制上面的特定`FEniCS`数据，还是绘制普通数据，都无需额外`using PyPlot`。 
+如果只使用`plot`，无论绘制上面的特定`FEniCS`数据，还是绘制普通数据，都无需额外`using PyPlot`。 
 
 但是，如果希望用到`PyPlot`的其它API，那么必须额外`using PyPlot`。
 
