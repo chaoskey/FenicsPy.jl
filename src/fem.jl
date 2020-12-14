@@ -14,19 +14,37 @@
 @pyclass dolfin NonlinearVariationalSolver
 @pyclass dolfin LocalSolver
 @pyclass dolfin DirichletBC
+@pyclass dolfin MultiMeshDirichletBC
 @pyclass dolfin AutoSubDomain
 @pyclass dolfin Assembler
+@pyclass dolfin SystemAssembler
+@pyclass dolfin MultiMeshAssembler
 @pyclass dolfin DofMap
+@pyclass dolfin DiscreteOperators
+@pyclass dolfin PETScDMCollection
+@pyclass dolfin PointSource
+@pyclass dolfin SparsityPatternBuilder
 
 @pyfunc dolfin assemble
 @pyfunc dolfin assemble_system
+@pyfunc dolfin assemble_local
 @pyfunc dolfin errornorm
 @pyfunc dolfin project
 @pyfunc dolfin solve
+@pyfunc dolfin adapt
+@pyfunc dolfin create_mesh
+@pyfunc dolfin dof_to_vertex_map
+@pyfunc dolfin get_coordinates
+@pyfunc dolfin set_coordinates
+@pyfunc dolfin vertex_to_dof_map
 
 export LinearVariationalProblem, LinearVariationalSolver, NonlinearVariationalProblem, 
-       NonlinearVariationalSolver, LocalSolver, DirichletBC, AutoSubDomain, Assembler,
-       DofMap, assemble, assemble_system, errornorm, project, solve
+       NonlinearVariationalSolver, LocalSolver, DirichletBC, MultiMeshDirichletBC, 
+       AutoSubDomain, Assembler, SystemAssembler, MultiMeshAssembler, DofMap, 
+       DiscreteOperators, PETScDMCollection, PointSource, SparsityPatternBuilder, 
+       assemble, assemble_system, assemble_local, errornorm, project, solve, 
+       adapt, create_mesh, dof_to_vertex_map, get_coordinates, set_coordinates, 
+       vertex_to_dof_map
 
 
 ############################################

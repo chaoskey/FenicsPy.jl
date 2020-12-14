@@ -44,14 +44,12 @@ export Expression, Coefficient, Constant, FeFunction, FunctionSpace, MultiMeshFu
 ############################################
 
 # no need to export
-@pyclass ufl Argument Expression
-@pyclass dolfin Form Expression
-
-# no need to export
-# not exported in `feincs` and `ufl` 
+# not exported in `dolfin` or `ufl`
 @pyclass dolfin Equation Expression
 
 # export 
+@pyclass ufl Argument Expression
+@pyclass dolfin Form Expression
 @pyclass ufl Measure
 @pyclass ufl Identity Expression
 @pyfunc ufl lhs
@@ -68,6 +66,6 @@ end
 
 len(U::OpType) = length(U.pyobject)
 
-export Measure, Identity, lhs, rhs, array, len
+export Argument, Form, Measure, Identity, lhs, rhs, array, len
 
 

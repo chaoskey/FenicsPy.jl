@@ -8,6 +8,7 @@
 #
 ############################################
 
+# 这两个类，没有从`dolfin`中导出，所以本库也不导出。 仅用作父类而存在。
 @pyclass dolfin GenericTensor          # Bases: dolfin.cpp.la.LinearAlgebraObject
 @pyclass dolfin GenericMatrix GenericTensor
 
