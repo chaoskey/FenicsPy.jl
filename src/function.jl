@@ -57,7 +57,8 @@ export Expression, Coefficient, Constant, FeFunction, FunctionSpace, MultiMeshFu
 @pyfunc ufl lhs
 @pyfunc ufl rhs
 
-array(vec::Union{FeVector, FeMatrix}) = vec.pyobject.gather_on_zero()
+array(vec::GenericVector) = vec.pyobject.gather_on_zero()
+array(vec::GenericMatrix) = vec.pyobject.array()
 array(form::Expression) =  array(assemble(form)).gather_on_zero()
 function array(solution::FeFunction)
     generic_vector = solution.pyobject.vector()

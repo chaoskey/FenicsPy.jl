@@ -173,6 +173,11 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
             setproperty!(_obj.pyobject, _sym, to_pytype(value))
         end
 
+        Base.getindex(o::$impl, key::Union{String, Symbol}) = to_fetype(get(o.pyobject, key))
+        Base.getindex(o::$impl, idx::Int) = to_fetype(get(o.pyobject, idx-1))
+        Base.setindex!(o::$impl, value, key::Union{String, Symbol}) = set!(o.pyobject, key, to_pytype(value))
+        Base.setindex!(o::$impl, value, idx::Int) = set!(o.pyobject, idx-1, to_pytype(value))
+
         ###############################
         # https://docs.julialang.org/en/v1/manual/methods/#Function-like-objects
         #
@@ -185,40 +190,6 @@ macro pyclass(_module::Symbol, name::Symbol, _base::Symbol=:FeObject, alias::Sym
             to_fetype(o.pyobject(_args...; _kwargs...))
 	end
 
-        ###############################
-        # like-array
-        #
-        # examples :
-        #    markers = MeshFunction("size_t", mesh, 2, mesh.domains())
-        #    markers[1]
-        ###############################
-        function Base.lastindex(o::$impl)
-            o.pyobject.size()
-        end
-        
-        Base.getindex(o::$impl, key::Union{String, Symbol}) = to_fetype(get(o.pyobject, key))
-        function Base.getindex(o::$impl, idx::Int...)
-            @assert length(idx) <= 1000   "Illegal operation, please try other methods. for example: array(u)[:]"
-            to_fetype(o.pyobject[idx...])
-        end
-        function Base.getindex(o::$impl, idx::UnitRange{Int}) 
-            @assert length(idx) <= 1000   "Illegal operation, please try other methods. for example: array(u)[:]"
-            to_fetype(o.pyobject[idx...])
-        end
-        Base.getindex(o::$impl, idx::Colon) = o[1:end]
-        
-        Base.setindex!(o::$impl, value, key::Union{String, Symbol}) = set!(o.pyobject, key, to_pytype(value))
-        function Base.setindex!(o::$impl, value, idx::Int...)
-            @assert length(idx) <= 1000   "Illegal operation, please try other methods. for example: u_n.assign(u)"
-            o.pyobject[idx...] = to_pytype(value)
-        end
-        function Base.setindex!(o::$impl, value, idx::UnitRange{Int})
-            @assert length(idx) <= 1000   "Illegal operation, please try other methods. for example: u_n.assign(u)"
-            o.pyobject[idx...] = to_pytype(value)
-        end
-        function Base.setindex!(o::$impl, value, idx::Colon)
-            o[1:end] = value
-        end
 
         ###############################
         # examples :

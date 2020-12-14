@@ -119,18 +119,16 @@ function update_fields(u, u_old, v_old, a_old)
     """Update fields at the end of each time step."""
 
     # Get vectors (references)
-    u_vec, u0_vec  = u, u_old # u.vector(), u_old.vector()
-    v0_vec, a0_vec = v_old, a_old # v_old.vector(), a_old.vector()
+    u_vec, u0_vec  = u.vector(), u_old.vector()
+    v0_vec, a0_vec = v_old.vector(), a_old.vector()
 
     # use update functions using vector arguments
     a_vec = update_a(u_vec, u0_vec, v0_vec, a0_vec)
     v_vec = update_v(a_vec, u0_vec, v0_vec, a0_vec)
 
     # Update (u_old <- u)
-    #v_old.vector()[:], a_old.vector()[:] = v_vec, a_vec
-    # u_old.vector()[:] = u.vector()
-    v_old.assign(v_vec)
-    a_old.assign(a_vec)
+    v_old.vector()[:] = v_vec
+    a_old.vector()[:] = a_vec
     u_old.assign(u)
 end
 

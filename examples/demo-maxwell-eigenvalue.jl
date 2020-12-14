@@ -15,7 +15,7 @@ function eigenvalues(V, bcs)
     b = inner(u, v)*dx
     
     # Assemble into PETSc matrices
-    dummy = v[0]*dx
+    dummy = v[1]*dx
     A = PETScMatrix()
     assemble_system(a, dummy, bcs, A_tensor=A)
     B = PETScMatrix()

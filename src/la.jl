@@ -8,20 +8,33 @@
 #
 ############################################
 
-@pyclass dolfin Matrix FeObject FeMatrix
-@pyclass dolfin Vector FeObject FeVector
-@pyclass dolfin PETScVector FeVector
-@pyclass dolfin PETScMatrix FeMatrix
-@pyclass dolfin EigenVector FeVector
-@pyclass dolfin EigenMatrix FeMatrix
-@pyclass dolfin VectorSpaceBasis
-@pyclass dolfin LUSolver
-@pyclass dolfin SLEPcEigenSolver
-@pyclass dolfin KrylovSolver
-@pyclass dolfin NewtonSolver
-@pyclass dolfin PETScLUSolver
-@pyclass dolfin PETScKrylovSolver
-@pyclass dolfin NonlinearProblem
+@pyclass dolfin GenericTensor          # Bases: dolfin.cpp.la.LinearAlgebraObject
+@pyclass dolfin GenericMatrix GenericTensor
+
+@pyclass dolfin Scalar GenericTensor
+@pyclass dolfin GenericVector GenericTensor
+@pyclass dolfin EigenVector GenericVector
+@pyclass dolfin PETScVector GenericVector
+@pyclass dolfin Vector GenericVector FeVector
+@pyclass dolfin EigenMatrix GenericMatrix
+@pyclass dolfin PETScMatrix GenericMatrix
+@pyclass dolfin Matrix GenericMatrix FeMatrix
+@pyclass dolfin BlockMatrix            # Bases: object
+@pyclass dolfin BlockVector            # Bases: object
+@pyclass dolfin IndexMap               # Bases: object
+@pyclass dolfin KrylovSolver           # Bases: dolfin.cpp.la.GenericLinearSolver
+@pyclass dolfin LUSolver               # Bases: dolfin.cpp.la.GenericLinearSolver
+@pyclass dolfin DefaultFactory         # Bases: dolfin.cpp.la.GenericLinearAlgebraFactory
+@pyclass dolfin EigenFactory           # Bases: dolfin.cpp.la.GenericLinearAlgebraFactory
+@pyclass dolfin LinearOperator         # Bases: dolfin.cpp.la.LinearAlgebraObject
+@pyclass dolfin TensorLayout           # Bases: dolfin.cpp.common.Variable
+@pyclass dolfin VectorSpaceBasis       # Bases: object
+@pyclass dolfin NewtonSolver           # Bases: dolfin.cpp.common.Variable
+@pyclass dolfin NonlinearProblem       # Bases: object
+@pyclass dolfin OptimisationProblem NonlinearProblem
+@pyclass dolfin SLEPcEigenSolver       # Bases: dolfin.cpp.common.Variable, dolfin.cpp.la.PETScObject
+@pyclass dolfin PETScLUSolver          # Bases: dolfin.cpp.la.GenericLUSolver, dolfin.cpp.la.PETScObject
+@pyclass dolfin PETScKrylovSolver      # Bases: dolfin.cpp.la.GenericLinearSolver, dolfin.cpp.la.PETScObject
 
 @pyfunc ufl as_tensor
 @pyfunc ufl as_vector
@@ -46,18 +59,40 @@
 list_lu_solver_methods, list_linear_solver_methods, lu_solver_methods, linear_solver_methods,
 list_krylov_solver_methods, list_krylov_solver_preconditioners, normalize,residual
 
-*(v::Union{FeMatrix, FeVector}, c::Real) = to_fetype(v.pyobject * c)
-*(c::Real, v::Union{FeMatrix, FeVector}) = to_fetype(c * v.pyobject)
+*(v::GenericTensor, c::Real) = to_fetype(v.pyobject * c)
+*(c::Real, v::GenericTensor) = to_fetype(c * v.pyobject)
 
-+(v1::FeVector, v2::FeVector) = to_fetype(v1.pyobject + v2.pyobject)
++(v1::GenericVector, v2::GenericVector) = to_fetype(v1.pyobject + v2.pyobject)
 
--(v1::FeVector, v2::FeVector) = to_fetype(v1.pyobject - v2.pyobject)
+-(v1::GenericVector, v2::GenericVector) = to_fetype(v1.pyobject - v2.pyobject)
+-(v::GenericTensor) = to_fetype( (-1) * v.pyobject)
 
-/(v::Union{FeMatrix, FeVector}, c::Real) = to_fetype(v.pyobject / c)
+/(v::GenericTensor, c::Real) = to_fetype(v.pyobject / c)
 
-export FeMatrix, FeVector, PETScVector, PETScMatrix, EigenVector, EigenMatrix, 
-       VectorSpaceBasis, LUSolver, PETScLUSolver, SLEPcEigenSolver, NewtonSolver, 
-       PETScKrylovSolver, NonlinearProblem, KrylovSolver, as_tensor, as_vector, 
+function Base.lastindex(o::GenericVector)
+    o.pyobject.size()
+end
+
+Base.getindex(o::GenericVector, idx::Union{Array{Int},UnitRange{Int}}) = to_fetype(o.pyobject.get_local(idx .- 1))
+Base.getindex(o::GenericVector, idx::Colon) = o[1:end]
+
+function Base.setindex!(o::GenericVector, values::Union{GenericVector,Array}, idx::Union{Array{Int},UnitRange{Int}})
+    if isa(values,GenericVector)
+        o.pyobject.set_local(values.pyobject)
+    else
+        cp = o.pyobject.get_local()
+        cp[idx] = values[idx]
+        o.pyobject.set_local(cp)
+    end
+end
+function Base.setindex!(o::GenericVector, values::Union{GenericVector,Array}, idx::Colon)
+    o[1:end] = values
+end
+
+export Scalar, GenericVector, EigenVector, PETScVector, Vector, EigenMatrix, PETScMatrix, Matrix, 
+       BlockMatrix, BlockVector, IndexMap, KrylovSolver, LUSolver, DefaultFactory, EigenFactory, 
+       LinearOperator, TensorLayout, VectorSpaceBasis, NewtonSolver, NonlinearProblem, 
+       OptimisationProblem, SLEPcEigenSolver, PETScLUSolver, PETScKrylovSolver, as_tensor, as_vector, 
        as_matrix, list_lu_solver_methods, list_linear_solver_methods, lu_solver_methods, 
        linear_solver_methods, list_linear_algebra_backends, has_linear_algebra_backend, 
        has_krylov_solver_method,has_krylov_solver_preconditioner, list_krylov_solver_methods, 
