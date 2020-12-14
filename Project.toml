@@ -1,7 +1,7 @@
 name = "FenicsPy"
 uuid = "3efbc270-88d0-4c7e-ad96-7b69f887f208"
 authors = ["chaoskey <chaoskey@gmail.com>"]
-version = "0.2.1"
+version = "0.2.2"
 
 [deps]
 PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
