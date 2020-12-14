@@ -180,21 +180,7 @@ force_boundary = CompiledSubDomain(right)
 完整的代码，参考：[examples/demo_elastodynamics.jl](https://gitee.com/chaoskey/FenicsPy.jl/blob/master/examples/demo_elastodynamics.jl)
 
 
-### 6）关于`FEniCS`中`Vector`的赋值
-
-在`python`中，下面两行代码的功能一样。
-
-```python
-u0.vector()[:] = u.vector()
-
-u0.assign(u)
-```
-
-但是在`julia`中，第一行代码有性能问题（执行缓慢，甚至死机）。  建议使用第二行代码。
-
-完整的代码，参考：[examples/demo_cahn-hilliard.jl](https://gitee.com/chaoskey/FenicsPy.jl/blob/master/examples/demo_cahn-hilliard.jl)
-
-### 7）关于绘图
+### 6）关于绘图
 
 `FenicsPy.jl`关于绘图的接口函数只有`plot(...)`。这个接口函数的第一个参数类型只支持：`Mesh`, `MeshFunction`, `FeFunction`, `Expression`, `DirichletBC`, `FiniteElement`,`MultiMesh`， 所以与`PyPlot.jl`的原本的`plot`不冲突。
 

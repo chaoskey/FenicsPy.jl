@@ -81,7 +81,7 @@ function Base.setindex!(o::GenericVector, values::Union{GenericVector,Array}, id
         o.pyobject.set_local(values.pyobject)
     else
         cp = o.pyobject.get_local()
-        cp[idx] = values[idx]
+        cp[idx] = values
         o.pyobject.set_local(cp)
     end
 end
@@ -89,7 +89,7 @@ function Base.setindex!(o::GenericVector, values::Union{GenericVector,Array}, id
     o[1:end] = values
 end
 
-export Scalar, GenericVector, EigenVector, PETScVector, Vector, EigenMatrix, PETScMatrix, Matrix, 
+export Scalar, GenericVector, EigenVector, PETScVector, FeVector, EigenMatrix, PETScMatrix, FeMatrix, 
        BlockMatrix, BlockVector, IndexMap, KrylovSolver, LUSolver, DefaultFactory, EigenFactory, 
        LinearOperator, TensorLayout, VectorSpaceBasis, NewtonSolver, NonlinearProblem, 
        OptimisationProblem, SLEPcEigenSolver, PETScLUSolver, PETScKrylovSolver, as_tensor, as_vector, 
