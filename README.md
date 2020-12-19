@@ -44,6 +44,8 @@ ufl : https://fenicsproject.org/docs/ufl
 
 mshr : https://bitbucket.org/fenics-project/mshr/wiki/Home
 
+The FEniCS Book(翻译中) ： https://chaoskey.gitee.io/notes/docs/fem/
+
 ## 范例
 
 [有限元法解偏微分方程](https://chaoskey.gitee.io/notes/docs/julia/0094/)
