@@ -70,18 +70,16 @@ The FEniCS Book(翻译中) ： https://chaoskey.gitee.io/notes/docs/fem/
 
 - 1） Axes3D currently only supports the aspect argument 'auto'. You passed in 'equal'.
 
-错误现象如图：
+错误复现代码：
 
-![](https://chaoskey.github.io/notes/001.jpg)
+```julia
+using FenicsPy
 
-解决方法，直接修改`plotting.py`对应的代码，如图：
+mesh = UnitCubeMesh(10, 10, 10)
+plot(mesh, title="Unit cube")
+```
 
-![](https://chaoskey.github.io/notes/003.jpg)
-
-修改后执行如图：
-
-![](https://chaoskey.github.io/notes/002.jpg)
-
+错误解决方法: 直接修改`plotting.py`对应的代码，根据错误提示的行号，将`ax.set_aspect('equal')` 缩进一个`Tab`或`4个空格`即可。
 
 ## FenicsPy 和 FEniCS 的某些差异
 
