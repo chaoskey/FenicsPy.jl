@@ -38,9 +38,9 @@ pkg > test FenicsPy
 
 FEniCS : https://fenicsproject.org/documentation/
 
-dolfin ：https://fenicsproject.org/docs/dolfin
+dolfin ：https://fenicsproject.org/olddocs/dolfin
 
-ufl : https://fenicsproject.org/docs/ufl
+ufl : https://fenicsproject.org/olddocs/ufl
 
 mshr : https://bitbucket.org/fenics-project/mshr/wiki/Home
 
