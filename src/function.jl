@@ -52,8 +52,6 @@ export Expression, Coefficient, Constant, FeFunction, FunctionSpace, MultiMeshFu
 @pyclass dolfin Form Expression
 @pyclass ufl Measure
 @pyclass ufl Identity Expression
-@pyfunc ufl lhs
-@pyfunc ufl rhs
 
 array(vec::GenericVector) = vec.pyobject.gather_on_zero()
 array(vec::GenericMatrix) = vec.pyobject.array()
@@ -66,6 +64,6 @@ end
 
 len(U::OpType) = length(U.pyobject)
 
-export Argument, Form, Measure, Identity, lhs, rhs, array, len
+export Argument, Form, Measure, Identity, array, len
 
 

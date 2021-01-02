@@ -86,7 +86,6 @@ export outer, inner, dot, cross, perp, det, cofac, tr, diag, diag_vector, dev, s
 
 # export
 diff(f::OpType,v::Variable) = VariableDerivative(ufl.diff(f.pyobject, v.pyobject))  # Base.diff
-@pyfunc dolfin derivative
 @pyfunc ufl grad
 div(u::OpType) = Div(ufl.div(u.pyobject)) # Base.div
 @pyfunc ufl nabla_grad
@@ -96,7 +95,7 @@ div(u::OpType) = Div(ufl.div(u.pyobject)) # Base.div
 @pyfunc ufl curl
 @pyfunc ufl rot
 
-export diff, derivative, grad, nabla_div, nabla_grad, Dx, Dn, curl, rot
+export diff, grad, nabla_div, nabla_grad, Dx, Dn, curl, rot
 
 ############################################
 # Nonlinear functions
@@ -133,6 +132,27 @@ tanh(u::OpType) = Expression(ufl.tanh(u.pyobject)) # Base.tanh
 #@pyfunc dolfin bessel_K
 
 export max_value, min_value, ln, erf, atan_2, bessel_J, bessel_Y, bessel_I, bessel_K
+
+############################################
+# Form transformations
+#
+# https://fenicsproject.org/docs/ufl/1.6.0/ufl.html
+############################################
+
+@pyfunc ufl lhs
+@pyfunc ufl rhs
+@pyfunc ufl system
+@pyfunc ufl functional
+replace(u::Expression) = to_fetype(ufl.replace(u.pyobject))  # Base.replace
+@pyfunc ufl replace_integral_domains
+adjoint(u::Expression) = to_fetype(dolfin.adjoint(u.pyobject)) # Base.adjoint
+@pyfunc ufl action
+@pyfunc ufl energy_norm
+@pyfunc ufl sensitivity_rhs
+@pyfunc dolfin derivative
+
+export lhs, rhs, system, functional, replace, replace_integral_domains, adjoint, action, 
+       energy_norm, sensitivity_rhs, derivative
 
 ############################################
 #    Operator
