@@ -6,8 +6,9 @@ const INFO = 20
 const WARNING = 30
 const ERROR = 40
 const CRITICAL = 40
+const PROGRESS = 16
 
-export DEBUG, INFO, WARNING, ERROR, CRITICAL
+export DEBUG, INFO, WARNING, ERROR, CRITICAL, PROGRESS
 
 
 ############################################
