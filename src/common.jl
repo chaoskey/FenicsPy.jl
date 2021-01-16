@@ -5,8 +5,9 @@ const DEBUG = 10
 const INFO = 20
 const WARNING = 30
 const ERROR = 40
+const CRITICAL = 40
 
-export DEBUG, INFO, WARNING, ERROR
+export DEBUG, INFO, WARNING, ERROR, CRITICAL
 
 
 ############################################
@@ -67,5 +68,8 @@ export Variable, Parameters, plot, has_mpi, has_debug, has_hdf5, has_hdf5_parall
 @pyfunc dolfin set_log_level
 @pyfunc dolfin set_log_active
 @pyfunc dolfin info
+log(level::Integer, str::String) = dolfin.cpp.log.log(dolfin.LogLevel(level), str)
+
 
 export Progress, get_log_level, set_log_level, set_log_active, info
+
